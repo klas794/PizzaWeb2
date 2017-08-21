@@ -35,12 +35,13 @@ namespace InMemDbPizza
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<UserManager<ApplicationUser>>();
 
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager)
         {
             if (env.IsDevelopment())
             {
@@ -63,6 +64,8 @@ namespace InMemDbPizza
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            DbInitializer.Initialize(userManager);
         }
     }
 }
