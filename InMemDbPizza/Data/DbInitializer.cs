@@ -9,12 +9,15 @@ namespace InMemDbPizza.Data
 {
     public class DbInitializer
     {
-        public static void Initialize(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        public static void Initialize(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
         {
             var aUser = new ApplicationUser();
             aUser.UserName = "student@test.com";
             aUser.Email = "student@test.com";
             var r = userManager.CreateAsync(aUser, "Pa$$word").Result;
+
+            var adminRole = new IdentityRole { Name = "Admin" };
+            var roleResult = roleManager.CreateAsync(adminRole).Result;
 
             if (context.Dishes.ToList().Count == 0)
             {
