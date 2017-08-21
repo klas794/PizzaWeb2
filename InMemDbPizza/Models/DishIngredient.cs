@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace InMemDbPizza.Models
 {
-    public class Dish
+    public class DishIngredient
     {
+        public int IngredientId { get; set; }
+        public Ingredient Ingredient { get; set; }
         public int DishId { get; set; }
-        public string Name { get; set; }
-        public int Price { get; set; }
-        public List<DishIngredient> DishIngredients { get; set; }
+        public Dish Dish { get; set; }
     }
 }
