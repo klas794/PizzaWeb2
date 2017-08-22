@@ -1,4 +1,4 @@
-﻿@model InMemDbPizza.Models.Dish
+﻿@model ProjectPizzaWeb.Models.Category
 
 @{
     ViewData["Title"] = "Create";
@@ -6,7 +6,7 @@
 
 <h2>Create</h2>
 
-<h4>Dish</h4>
+<h4>Category</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,18 +16,6 @@
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DishIngredients" class="control-label"></label>
-                @foreach (var item in Model.DishIngredients)
-                {
-                    <input asp-for="DishIngredients" class="control-label"></input>
-                }
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

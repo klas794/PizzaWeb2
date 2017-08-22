@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using InMemDbPizza.Models;
+using ProjectPizzaWeb.Models;
 
 namespace InMemDbPizza.Data
 {
@@ -39,5 +40,6 @@ namespace InMemDbPizza.Data
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<DishIngredient> DishIngredients { get; set; }
         public DbSet<Ingredient> Ingredient { get; set; }
+        public DbSet<ProjectPizzaWeb.Models.Category> Category { get; set; }
     }
 }

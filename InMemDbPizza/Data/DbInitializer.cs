@@ -1,5 +1,6 @@
 ﻿using InMemDbPizza.Models;
 using Microsoft.AspNetCore.Identity;
+using ProjectPizzaWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,8 @@ namespace InMemDbPizza.Data
                 var margJalapeno = new DishIngredient { Dish = marg, Ingredient = jalapeno };
                 var hawaiiPineapple = new DishIngredient { Dish = hawaii, Ingredient = pineapple };
 
+                var categoryGeneral = new Category { Name = "General" };
+
                 capricciosa.DishIngredients = new List<DishIngredient>();
                 capricciosa.DishIngredients.Add(capricciosaTomato);
                 marg.DishIngredients = new List<DishIngredient>();
@@ -50,6 +53,7 @@ namespace InMemDbPizza.Data
 
                 context.AddRange(tomato, jalapeno, pineapple);
                 context.AddRange(capricciosa, marg, hawaii);
+                context.AddRange(categoryGeneral);
                 context.SaveChanges();
             }
         }
