@@ -48,7 +48,11 @@ namespace InMemDbPizza.Controllers
         // GET: Dishes/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new CreateDishViewModel();
+
+            model.AllIngredients = _context.Ingredient.ToList();
+
+            return View(model);
         }
 
         // POST: Dishes/Create

@@ -1,4 +1,4 @@
-﻿@model InMemDbPizza.Models.Dish
+﻿@model InMemDbPizza.Models.CreateDishViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,20 +13,20 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="Dish.Name" class="control-label"></label>
+                <input asp-for="Dish.Name" class="form-control" />
+                <span asp-validation-for="Dish.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <label asp-for="Dish.Price" class="control-label"></label>
+                <input asp-for="Dish.Price" class="form-control" />
+                <span asp-validation-for="Dish.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DishIngredients" class="control-label"></label>
-                @foreach (var item in Model.DishIngredients)
+                <label asp-for="AllIngredients" class="control-label"></label>
+                @foreach (var item in Model.AllIngredients)
                 {
-                    <input asp-for="DishIngredients" class="control-label"></input>
+                    @item.Name<text>, </text>
                 }
             </div>
             <div class="form-group">
