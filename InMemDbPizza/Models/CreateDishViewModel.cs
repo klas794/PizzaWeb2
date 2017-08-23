@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ProjectPizzaWeb.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace InMemDbPizza.Models
@@ -14,6 +15,6 @@ namespace InMemDbPizza.Models
 
         [Display(Name = "Select ingredients")]
 
-        public List<Ingredient> AllIngredients { get; set; }
+        public List<IngredientChoice> Ingredients { get; set; }
     }
 }

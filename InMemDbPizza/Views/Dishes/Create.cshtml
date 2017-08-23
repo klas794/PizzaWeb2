@@ -23,10 +23,14 @@
                 <span asp-validation-for="Dish.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AllIngredients" class="control-label"></label>
-                @foreach (var item in Model.AllIngredients)
+                <label asp-for="Ingredients" class="control-label"></label>
+                @for (int i = 0; i < Model.Ingredients.Count; i++)
                 {
-                    @item.Name<text>, </text>
+                    <div class="form-check">
+                        @Html.HiddenFor(x => x.Ingredients[i].Ingredient.Name)
+                        @Html.CheckBoxFor(x => x.Ingredients[i].Checked, new { @class = "form-check-input" })
+                        @Html.LabelFor(x => x.Ingredients[i].Checked, Model.Ingredients[i].Ingredient.Name, new { @class = "form-check-label" })
+                    </div>
                 }
             </div>
             <div class="form-group">

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using InMemDbPizza.Data;
 using InMemDbPizza.Models;
+using ProjectPizzaWeb.Models;
 
 namespace InMemDbPizza.Controllers
 {
@@ -50,7 +51,7 @@ namespace InMemDbPizza.Controllers
         {
             var model = new CreateDishViewModel();
 
-            model.AllIngredients = _context.Ingredient.ToList();
+            model.Ingredients = _context.Ingredient.Select(x => new IngredientChoice { Ingredient = x }).ToList();
 
             return View(model);
         }
@@ -60,15 +61,28 @@ namespace InMemDbPizza.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DishId,Name,Price")] Dish dish)
+        public async Task<IActionResult> Create(CreateDishViewModel dishModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dish);
+                dishModel.Dish.DishIngredients = new List<DishIngredient>();
+                foreach (var choice in dishModel.Ingredients)
+                {
+                    if(choice.Checked)
+                    {
+                        var dishIngredient = new DishIngredient {
+                            Dish = dishModel.Dish,
+                            Ingredient = _context.Ingredient.SingleOrDefault( x => x.Name == choice.Ingredient.Name )
+                        };
+                        _context.Add(dishIngredient);
+                        dishModel.Dish.DishIngredients.Add(dishIngredient);
+                    }
+                }
+                _context.Add(dishModel.Dish);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(dish);
+            return View(dishModel);
         }
 
         // GET: Dishes/Edit/5
