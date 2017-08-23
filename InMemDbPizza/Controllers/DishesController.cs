@@ -98,7 +98,23 @@ namespace InMemDbPizza.Controllers
             {
                 return NotFound();
             }
-            return View(dish);
+
+            var model = new CreateDishViewModel();
+
+            model.Dish = dish;
+
+            var dishIngredients = _context.DishIngredients
+                .Where(x => x.DishId == dish.DishId)
+                .ToList();
+
+            model.Ingredients = _context.Ingredient
+                .Select(x => new IngredientChoice {
+                    Ingredient = x,
+                    Checked = dishIngredients.Any(y => y.Ingredient == x)
+                })
+                .ToList();
+
+            return View(model);
         }
 
         // POST: Dishes/Edit/5
@@ -106,9 +122,9 @@ namespace InMemDbPizza.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DishId,Name,Price")] Dish dish)
+        public async Task<IActionResult> Edit(int id, CreateDishViewModel dishModel)
         {
-            if (id != dish.DishId)
+            if (id != dishModel.Dish.DishId)
             {
                 return NotFound();
             }
@@ -117,12 +133,43 @@ namespace InMemDbPizza.Controllers
             {
                 try
                 {
-                    _context.Update(dish);
+                    dishModel.Dish.DishIngredients = new List<DishIngredient>();
+                    foreach (var choice in dishModel.Ingredients)
+                    {
+                        var exists = _context.DishIngredients.Any(
+                            x => x.DishId == dishModel.Dish.DishId && x.Ingredient.Name == choice.Ingredient.Name);
+
+                        if (choice.Checked && !exists)
+                        {
+                            var dishIngredient = new DishIngredient
+                            {
+                                Dish = dishModel.Dish,
+                                Ingredient = _context.Ingredient.SingleOrDefault(x => x.Name == choice.Ingredient.Name)
+                            };
+
+                            _context.Add(dishIngredient);
+                            dishModel.Dish.DishIngredients.Add(dishIngredient);
+                        }
+                        else if(!choice.Checked && exists)
+                        {
+                            var dishIngredient = _context.DishIngredients.SingleOrDefault(
+                                x => x.DishId == dishModel.Dish.DishId && x.Ingredient.Name == choice.Ingredient.Name
+                                );
+
+                            if (dishIngredient != null)
+                            {
+                                _context.Remove(dishIngredient);
+                                dishModel.Dish.DishIngredients.Remove(dishIngredient);
+                            }
+                        }
+                    }
+
+                    _context.Update(dishModel.Dish);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DishExists(dish.DishId))
+                    if (!DishExists(dishModel.Dish.DishId))
                     {
                         return NotFound();
                     }
@@ -133,7 +180,7 @@ namespace InMemDbPizza.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(dish);
+            return View(dishModel);
         }
 
         // GET: Dishes/Delete/5

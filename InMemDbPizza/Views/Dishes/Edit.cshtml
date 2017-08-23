@@ -1,4 +1,4 @@
-﻿@model InMemDbPizza.Models.Dish
+﻿@model InMemDbPizza.Models.CreateDishViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,16 +12,27 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="DishId" />
+            <input type="hidden" asp-for="Dish.DishId" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="Dish.Name" class="control-label"></label>
+                <input asp-for="Dish.Name" class="form-control" />
+                <span asp-validation-for="Dish.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <label asp-for="Dish.Price" class="control-label"></label>
+                <input asp-for="Dish.Price" class="form-control" />
+                <span asp-validation-for="Dish.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ingredients" class="control-label"></label>
+                @for (int i = 0; i < Model.Ingredients.Count; i++)
+                {
+                    <div class="form-check">
+                        @Html.HiddenFor(x => x.Ingredients[i].Ingredient.Name)
+                        @Html.CheckBoxFor(x => x.Ingredients[i].Checked, new { @class = "form-check-input" })
+                        @Html.LabelFor(x => x.Ingredients[i].Checked, Model.Ingredients[i].Ingredient.Name, new { @class = "form-check-label" })
+                    </div>
+                }
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
