@@ -23,13 +23,16 @@
                 <span asp-validation-for="Dish.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Ingredients" class="control-label"></label>
-                @for (int i = 0; i < Model.Ingredients.Count; i++)
+                <select asp-for="Dish.Category" asp-items="@Model.Categories"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IngredientsChoices" class="control-label"></label>
+                @for (int i = 0; i < Model.IngredientsChoices.Count; i++)
                 {
                     <div class="form-check">
-                        @Html.HiddenFor(x => x.Ingredients[i].Ingredient.Name)
-                        @Html.CheckBoxFor(x => x.Ingredients[i].Checked, new { @class = "form-check-input" })
-                        @Html.LabelFor(x => x.Ingredients[i].Checked, Model.Ingredients[i].Ingredient.Name, new { @class = "form-check-label" })
+                        @Html.HiddenFor(x => x.IngredientsChoices[i].Ingredient.Name)
+                        @Html.CheckBoxFor(x => x.IngredientsChoices[i].Checked, new { @class = "form-check-input" })
+                        @Html.LabelFor(x => x.IngredientsChoices[i].Checked, Model.IngredientsChoices[i].Ingredient.Name, new { @class = "form-check-label" })
                     </div>
                 }
             </div>

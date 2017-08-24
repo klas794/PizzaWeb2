@@ -30,7 +30,12 @@ namespace InMemDbPizza.Data
                 .HasOne(di => di.Ingredient)
                 .WithMany(i => i.DishIngredients)
                 .HasForeignKey(di => di.IngredientId);
-            
+
+            builder.Entity<Dish>()
+                .HasOne(d => d.Category)
+                .WithMany(c => c.Dishes)
+                .HasForeignKey(d => d.CategoryId);
+
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.

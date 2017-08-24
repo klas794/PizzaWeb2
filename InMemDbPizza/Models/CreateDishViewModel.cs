@@ -1,4 +1,6 @@
-﻿using ProjectPizzaWeb.Models;
+﻿using InMemDbPizza.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ProjectPizzaWeb.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -15,6 +17,8 @@ namespace InMemDbPizza.Models
 
         [Display(Name = "Select ingredients")]
 
-        public List<IngredientChoice> Ingredients { get; set; }
+        public List<IngredientChoice> IngredientsChoices { get; set; }
+        
+        public List<SelectListItem> Categories { get; set; }
     }
 }

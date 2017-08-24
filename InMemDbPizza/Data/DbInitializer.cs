@@ -30,9 +30,12 @@ namespace InMemDbPizza.Data
 
             if (context.Dishes.ToList().Count == 0)
             {
-                var capricciosa = new Dish { Name = "Capricciosa", Price = 79 };
-                var marg = new Dish { Name = "Marguerita", Price = 59 };
-                var hawaii = new Dish { Name = "Hawaii", Price = 49 };
+                var categoryGeneral = new Category { Name = "General" };
+                var categoryBudget = new Category { Name = "Budget" };
+
+                var capricciosa = new Dish { Category = categoryGeneral, Name = "Capricciosa", Price = 79 };
+                var marg = new Dish { Category = categoryBudget, Name = "Marguerita", Price = 59 };
+                var hawaii = new Dish { Category = categoryGeneral, Name = "Hawaii", Price = 49 };
 
                 var tomato = new Ingredient { Name = "Tomato" };
                 var jalapeno = new Ingredient { Name = "Jalapeno" };
@@ -41,9 +44,7 @@ namespace InMemDbPizza.Data
                 var capricciosaTomato = new DishIngredient { Dish = capricciosa, Ingredient = tomato };
                 var margJalapeno = new DishIngredient { Dish = marg, Ingredient = jalapeno };
                 var hawaiiPineapple = new DishIngredient { Dish = hawaii, Ingredient = pineapple };
-
-                var categoryGeneral = new Category { Name = "General" };
-
+                
                 capricciosa.DishIngredients = new List<DishIngredient>();
                 capricciosa.DishIngredients.Add(capricciosaTomato);
                 marg.DishIngredients = new List<DishIngredient>();
@@ -52,8 +53,8 @@ namespace InMemDbPizza.Data
                 hawaii.DishIngredients.Add(hawaiiPineapple);
 
                 context.AddRange(tomato, jalapeno, pineapple);
+                context.AddRange(categoryGeneral, categoryBudget);
                 context.AddRange(capricciosa, marg, hawaii);
-                context.AddRange(categoryGeneral);
                 context.SaveChanges();
             }
         }

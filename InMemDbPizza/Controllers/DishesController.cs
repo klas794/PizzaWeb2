@@ -51,7 +51,9 @@ namespace InMemDbPizza.Controllers
         {
             var model = new CreateDishViewModel();
 
-            model.Ingredients = _context.Ingredient.Select(x => new IngredientChoice { Ingredient = x }).ToList();
+            model.Categories = _context.Category.Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() }).ToList();
+
+            model.IngredientsChoices = _context.Ingredient.Select(x => new IngredientChoice { Ingredient = x }).ToList();
 
             return View(model);
         }
@@ -66,7 +68,7 @@ namespace InMemDbPizza.Controllers
             if (ModelState.IsValid)
             {
                 dishModel.Dish.DishIngredients = new List<DishIngredient>();
-                foreach (var choice in dishModel.Ingredients)
+                foreach (var choice in dishModel.IngredientsChoices)
                 {
                     if(choice.Checked)
                     {
@@ -93,12 +95,12 @@ namespace InMemDbPizza.Controllers
                 return NotFound();
             }
 
-            var dish = await _context.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
+            var dish = await _context.Dishes.Include(x => x.Category).SingleOrDefaultAsync(m => m.DishId == id);
             if (dish == null)
             {
                 return NotFound();
             }
-
+            
             var model = new CreateDishViewModel();
 
             model.Dish = dish;
@@ -107,12 +109,17 @@ namespace InMemDbPizza.Controllers
                 .Where(x => x.DishId == dish.DishId)
                 .ToList();
 
-            model.Ingredients = _context.Ingredient
+            model.IngredientsChoices = _context.Ingredient
                 .Select(x => new IngredientChoice {
                     Ingredient = x,
                     Checked = dishIngredients.Any(y => y.Ingredient == x)
                 })
                 .ToList();
+
+            model.Categories = _context.Category.Select(
+                x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString(),
+                    Selected = dish.Category.CategoryId ==  x.CategoryId
+                }).ToList();
 
             return View(model);
         }
@@ -134,7 +141,7 @@ namespace InMemDbPizza.Controllers
                 try
                 {
                     dishModel.Dish.DishIngredients = new List<DishIngredient>();
-                    foreach (var choice in dishModel.Ingredients)
+                    foreach (var choice in dishModel.IngredientsChoices)
                     {
                         var exists = _context.DishIngredients.Any(
                             x => x.DishId == dishModel.Dish.DishId && x.Ingredient.Name == choice.Ingredient.Name);
