@@ -1,3 +1,68 @@
-﻿@{
+﻿@model InMemDbPizza.Models.MenuViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
+
+<div class="col-sm-2">
+    <p>
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-warning">
+                Categories
+            </li>
+
+            <li class="list-group-item">
+                <a asp-action="Index" asp-controller="Home">
+                    All pizzas
+                </a>
+            </liclass="list-group-item">
+
+            @foreach (var category in Model.Categories)
+            {
+                <li class="list-group-item">
+                    <a asp-action="Index" asp-controller="Home" asp-route-categoryId="@category.CategoryId">
+                        @category.Name
+                    </a>
+                </li>
+            }
+        </ul>
+    </p>
+</div>
+<div class="col-sm-8">
+    <p>
+        <form>
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-warning">
+                All pizzas
+            </li>
+
+            @foreach (var item in Model.Dishes)
+            {
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <img src="~/images/pizza-slice.png" style="height: 30px" />
+                    </div>
+                    <div class="col-sm-9">
+                        <p>@item.Name<text>,</text> @item.Price kr</p>
+                        @*<p>
+                        <i>
+                            @foreach (var dishIngredient in item.DishIngredients)
+                            {
+                                @dishIngredient.Ingredient.Name<text>,</text>
+                            }
+                        </i>
+                        </p>*@
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-default btn-sm float-right">
+                            <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </li>   
+            }
+        </ul>
+    </form>
+    </p>
+</div>

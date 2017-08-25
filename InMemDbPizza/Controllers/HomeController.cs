@@ -5,30 +5,39 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using InMemDbPizza.Models;
+using InMemDbPizza.Data;
+using ProjectPizzaWeb.Models;
 
 namespace InMemDbPizza.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ApplicationDbContext _context;
+
+        public HomeController(ApplicationDbContext context)
         {
-            return View();
+            _context = context;
         }
 
-        public IActionResult About()
+        public IActionResult Index(int? categoryId)
         {
-            ViewData["Message"] = "Your application description page.";
+            var model = new MenuViewModel();
 
-            return View();
+            if(categoryId != null)
+            {
+                model.Dishes = _context.Dishes.Where(x => x.CategoryId == categoryId).ToList();
+                model.Category = _context.Category.SingleOrDefault(x => x.CategoryId == categoryId);
+            }
+            else
+            {
+                model.Dishes = _context.Dishes.ToList();
+            }
+
+            model.Categories = _context.Category.ToList();
+
+            return View(model);
         }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
+        
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

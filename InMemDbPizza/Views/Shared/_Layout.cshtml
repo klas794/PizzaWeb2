@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - InMemDbPizza</title>
+    <title>@ViewData["Title"]</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
-<body>
+<body style="background: url('~/images/pizza-baker.png')">
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -26,7 +26,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">InMemDbPizza</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Pizza Web</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -43,10 +43,20 @@
         </div>
     </nav>
     <div class="container body-content">
-        @RenderBody()
+
+        <div class="container">
+            <div class="row">
+                @RenderBody()
+                <div class="col-sm-2">
+                    @{ Html.RenderPartial("_Cart"); }
+                </div>
+            </div>
+        </div>
+
+        
         <hr />
         <footer>
-            <p>&copy; 2017 - InMemDbPizza</p>
+            <p>&copy; 2017 - Pizza Web</p>
         </footer>
     </div>
 
