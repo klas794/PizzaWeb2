@@ -33,7 +33,7 @@
         <form>
         <ul class="list-group">
             <li class="list-group-item list-group-item-warning">
-                All pizzas
+                @(Model.Category == null ? "All pizzas": Model.Category.Name)
             </li>
 
             @foreach (var item in Model.Dishes)
@@ -43,7 +43,7 @@
                     <div class="col-sm-1">
                         <img src="~/images/pizza-slice.png" style="height: 30px" />
                     </div>
-                    <div class="col-sm-9">
+                    <div class="col-sm-8">
                         <p>@item.Name<text>,</text> @item.Price kr</p>
                         @*<p>
                         <i>
@@ -54,10 +54,17 @@
                         </i>
                         </p>*@
                     </div>
-                    <div class="col-sm-2">
-                        <button type="button" class="btn btn-default btn-sm float-right">
-                            <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
-                        </button>
+                    <div class="col-sm-3 row">
+                        <div class="col-sm-5">
+                            <button type="button" class="btn btn-default btn-sm float-right" name="action-edit">
+                                <span class="glyphicon glyphicon-shopping-cart"></span> Edit
+                            </button>
+                        </div>
+                        <div class="col-sm-7">
+                            <button type="button" class=" btn btn-default btn-sm float-right" name="action-submit">
+                                <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
+                            </button>
+                        </div>
                     </div>
                 </div>
             </li>   
