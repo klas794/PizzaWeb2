@@ -19,14 +19,13 @@
                 {
                     <p>
                         <div class="row">
-                            <div class="col-sm-9">
+                            <div class="col-sm-8">
                                 <a asp-action="EditDish" asp-controller="Cart" asp-route-cartItemId="@item.CartItemId">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </a>
+                                    <span class="glyphicon glyphicon-edit"></span></a>
                                 @item.Dish.Name (@item.Quantity)
                             </div>
-                            <div class="col-sm-3">
-                                @(item.Dish.Price * item.Quantity)
+                            <div class="col-sm-4">
+                                <span class="pull-right">@(item.Dish.Price * item.Quantity) kr</span>
                             </div>
                         </div>
                     </p>
@@ -35,8 +34,9 @@
                 <p>
                     <div class="row">
                         <div class="col-sm-12">
-                            Total: @Model.Cart.CartItems.Sum(x => x.Dish.Price * x.Quantity) kr
-                        </div>
+                            Total:
+                            <span class="pull-right">@Model.Cart.CartItems.Sum(x => x.Dish.Price * x.Quantity) kr</span>
+</div>
                     </div>
                 </p>
             }

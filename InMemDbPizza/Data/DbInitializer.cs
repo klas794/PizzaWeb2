@@ -36,12 +36,6 @@ namespace InMemDbPizza.Data
                 var marg = new Dish { Category = categoryBudget, Name = "Marguerita", Price = 59 };
                 var hawaii = new Dish { Category = categoryGeneral, Name = "Hawaii", Price = 49 };
 
-                var cart = new Cart();
-                var cartItem = new CartItem() { Cart = cart, Dish = marg, Quantity = 1 };
-
-                cart.CartItems = new List<CartItem>();
-                cart.CartItems.Add(cartItem);
-
                 var tomato = new Ingredient { Name = "Tomato" };
                 var jalapeno = new Ingredient { Name = "Jalapeno" };
                 var pineapple = new Ingredient { Name = "Pineapple" };
@@ -57,14 +51,39 @@ namespace InMemDbPizza.Data
                 hawaii.DishIngredients = new List<DishIngredient>();
                 hawaii.DishIngredients.Add(hawaiiPineapple);
 
-                context.Add(cartItem);
-                context.Add(cart);
                 context.AddRange(tomato, jalapeno, pineapple);
                 context.AddRange(categoryGeneral, categoryBudget);
                 context.AddRange(capricciosa, marg, hawaii);
+
+                DbInitializer.AddSeededCart(marg, context);
+
                 context.SaveChanges();
 
             }
+
+            
+        }
+
+        public static void AddSeededCart(Dish dish, ApplicationDbContext context)
+        {
+
+            var cart = new Cart();
+            var cartItem = new CartItem() { Cart = cart, Dish = dish, Quantity = 1 };
+            cartItem.CartItemIngredients = new List<CartItemIngredient>();
+
+            var cartItemIngredients = dish.DishIngredients.Select(x => new CartItemIngredient
+            {
+                CartItem = cartItem,
+                Ingredient = x.Ingredient
+            });
+
+            cartItem.CartItemIngredients.AddRange(cartItemIngredients);
+
+            cart.CartItems = new List<CartItem>();
+            cart.CartItems.Add(cartItem);
+
+            context.Add(cartItem);
+            context.Add(cart);
         }
     }
 }

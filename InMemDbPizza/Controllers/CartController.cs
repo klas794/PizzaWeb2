@@ -69,6 +69,7 @@ namespace ProjectPizzaWeb.Controllers
             var dish = _context.Dishes.SingleOrDefault(x => x.DishId == dishId);
 
             var dishIngredients = _context.DishIngredients
+                .Include(x => x.Ingredient)
                 .Where(x => x.DishId == dishId)
                 .ToList();
 
@@ -81,10 +82,13 @@ namespace ProjectPizzaWeb.Controllers
             if(act == "add")
             {
                 cartItem.CartItemIngredients = dishIngredients.Select(x => new CartItemIngredient {
+                        CartItemId = cartItem.CartItemId,
                         CartItem = cartItem,
-                        Ingredient = x.Ingredient
+                        Ingredient = x.Ingredient,
+                        IngredientId = x.IngredientId
                     })
                     .ToList();
+                _context.AddRange(cartItem.CartItemIngredients);
                 _context.Add(cartItem);
                 _context.SaveChanges();
 
@@ -150,8 +154,8 @@ namespace ProjectPizzaWeb.Controllers
                 .Include(x => x.Dish)
                 .SingleOrDefault(x => x.CartItemId == cartItemId);
 
-            var dishIngredients = _context.DishIngredients
-                .Where(x => x.DishId == cartItem.DishId)
+            var cartItemIngredients = _context.CartItemIngredients
+                .Where(x => x.CartItemId == cartItem.CartItemId)
                 .ToList();
 
             model.IngredientsChoices =
@@ -159,7 +163,7 @@ namespace ProjectPizzaWeb.Controllers
                 .Select(x => new IngredientChoice
                 {
                     Ingredient = x,
-                    Checked = dishIngredients.Any(y => y.Ingredient == x)
+                    Checked = cartItemIngredients.Any(y => y.Ingredient == x)
                 })
                 .ToList();
             
@@ -175,7 +179,16 @@ namespace ProjectPizzaWeb.Controllers
             if (ModelState.IsValid)
             {
                 var cartItem = _context.CartItems
+                    .Include(x => x.CartItemIngredients)
                     .SingleOrDefault(x => x.CartItemId == model.CartItem.CartItemId);
+
+                _context.RemoveRange(cartItem.CartItemIngredients);
+
+                await _context.SaveChangesAsync();
+
+
+                cartItem.Quantity = model.CartItem.Quantity;
+
 
                 cartItem.CartItemIngredients = new List<CartItemIngredient>();
 
@@ -183,12 +196,12 @@ namespace ProjectPizzaWeb.Controllers
                     .Where(x => x.Checked == true)
                     .Select(x => new CartItemIngredient
                     {
+                        CartItemId = cartItem.CartItemId,
                         CartItem = cartItem,
-                        Ingredient = x.Ingredient,
+                        Ingredient = _context.Ingredient.SingleOrDefault(y => y.IngredientId == x.Ingredient.IngredientId),
+                        IngredientId = x.Ingredient.IngredientId
                     })
                     .ToList();
-
-                var cart = GetCart();
 
                 _context.Update(cartItem);
 

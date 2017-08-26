@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddDish">
+        <form asp-action="EditDish">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input asp-for="CartItem.DishId" type="hidden" value="@Model.CartItem.Dish.DishId" />
             <input asp-for="CartItem.CartItemId" type="hidden" value="@Model.CartItem.CartItemId" />
@@ -19,7 +19,7 @@
                 @for (int i = 0; i < Model.IngredientsChoices.Count; i++)
                 {
                     <div class="form-check">
-                        @Html.HiddenFor(x => x.IngredientsChoices[i].Ingredient.Name)
+                        @Html.HiddenFor(x => x.IngredientsChoices[i].Ingredient.IngredientId)
                         @Html.CheckBoxFor(x => x.IngredientsChoices[i].Checked, new { @class = "form-check-input" })
                         @Html.LabelFor(x => x.IngredientsChoices[i].Checked, Model.IngredientsChoices[i].Ingredient.Name, new { @class = "form-check-label" })
                     </div>
