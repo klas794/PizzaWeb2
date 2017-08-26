@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using InMemDbPizza.Models;
 using InMemDbPizza.Data;
 using ProjectPizzaWeb.Models;
+using ProjectPizzaWeb.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace InMemDbPizza.Controllers
 {
@@ -19,9 +21,44 @@ namespace InMemDbPizza.Controllers
             _context = context;
         }
 
+        public Cart GetCart()
+        {
+            var cartId = HttpContext.Session.Get<int?>("cartid");
+            Cart cart = null;
+
+            if (cartId == null)
+            {
+                cart = _context.Cart
+                    .Include(x => x.CartItems)
+                    .SingleOrDefault();
+
+                //cart = new Cart();
+                //cart = _context.Add(cart);
+                //_context.SaveChanges();
+
+                HttpContext.Session.Set<int?>("cartid", cart.CartId);
+            }
+            else
+            {
+                cart = _context.Cart
+                    .Include(x => x.CartItems)
+                    .SingleOrDefault(x => x.CartId == cartId);
+            }
+
+            if (cart == null)
+            {
+                cart = new Cart();
+                HttpContext.Session.Set<int?>("cartid", cart.CartId);
+            }
+
+            return cart;
+        }
+
         public IActionResult Index(int? categoryId)
         {
             var model = new MenuViewModel();
+
+            model.Cart = GetCart();
 
             if(categoryId != null)
             {

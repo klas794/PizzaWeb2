@@ -36,6 +36,33 @@ namespace InMemDbPizza.Data
                 .WithMany(c => c.Dishes)
                 .HasForeignKey(d => d.CategoryId);
 
+            //builder.Entity<CartItem>()
+            //    .HasKey(ci => new { ci.CartItemId, ci.DishId, ci.CartId });
+
+            builder.Entity<CartItem>()
+                .HasOne(ci => ci.Dish)
+                .WithMany(d => d.CartItems)
+                .HasForeignKey(ci => ci.DishId);
+
+            builder.Entity<CartItem>()
+                .HasOne(ci => ci.Cart)
+                .WithMany(c => c.CartItems)
+                .HasForeignKey(ci => ci.CartId);
+
+            builder.Entity<CartItemIngredient>()
+                .HasKey(cii => new { cii.CartItemId, cii.IngredientId/*, cii.CartId*/ });
+
+            builder.Entity<CartItemIngredient>()
+                .HasOne(cii => cii.CartItem)
+                .WithMany(ci => ci.CartItemIngredients)
+                .HasForeignKey(cii => cii.CartItemId);
+
+            builder.Entity<CartItemIngredient>()
+                .HasOne(cii => cii.Ingredient)
+                .WithMany(i => i.CartItemIngredients)
+                .HasForeignKey(cii => cii.IngredientId);
+
+
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
@@ -45,6 +72,10 @@ namespace InMemDbPizza.Data
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<DishIngredient> DishIngredients { get; set; }
         public DbSet<Ingredient> Ingredient { get; set; }
-        public DbSet<ProjectPizzaWeb.Models.Category> Category { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<Cart> Cart { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<CartItemIngredient> CartItemIngredients { get; set; }
+
     }
 }

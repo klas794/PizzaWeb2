@@ -35,9 +35,11 @@ namespace InMemDbPizza.Controllers
             }
 
             var dish = await _context.Dishes
+                .Include(d => d.Category)
                 .Include(d => d.DishIngredients)
                 .ThenInclude(di => di.Ingredient)
                 .SingleOrDefaultAsync(m => m.DishId == id);
+
             if (dish == null)
             {
                 return NotFound();

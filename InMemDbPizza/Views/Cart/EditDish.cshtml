@@ -1,0 +1,48 @@
+﻿@model InMemDbPizza.Models.AddCartItemViewModel
+
+@{
+    ViewData["Title"] = "Edit cart item";
+}
+
+<h2>Edit cart item</h2>
+
+<h4>@Model.CartItem.Dish.Name</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddDish">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="CartItem.DishId" type="hidden" value="@Model.CartItem.Dish.DishId" />
+            <input asp-for="CartItem.CartItemId" type="hidden" value="@Model.CartItem.CartItemId" />
+            <div class="form-group">
+                <label asp-for="IngredientsChoices" class="control-label"></label>
+                @for (int i = 0; i < Model.IngredientsChoices.Count; i++)
+                {
+                    <div class="form-check">
+                        @Html.HiddenFor(x => x.IngredientsChoices[i].Ingredient.Name)
+                        @Html.CheckBoxFor(x => x.IngredientsChoices[i].Checked, new { @class = "form-check-input" })
+                        @Html.LabelFor(x => x.IngredientsChoices[i].Checked, Model.IngredientsChoices[i].Ingredient.Name, new { @class = "form-check-label" })
+                    </div>
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="CartItem.Quantity" class="control-label"></label>
+                <input asp-for="CartItem.Quantity" class="form-control" />
+                <span asp-validation-for="CartItem.Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class=" btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-shopping-cart"></span> Save to Cart
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

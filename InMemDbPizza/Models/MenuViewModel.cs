@@ -12,7 +12,7 @@ namespace InMemDbPizza.Models
         public List<Dish> Dishes { get; set; }
         public List<Category> Categories { get; set; }
         public Category Category { get; set; }
-
+        public Cart Cart { get; set; }
     }
 
 }

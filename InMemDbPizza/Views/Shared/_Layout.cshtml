@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
-<body style="background: url('~/images/pizza-baker.png')">
+<body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -47,8 +47,11 @@
         <div class="container">
             <div class="row">
                 @RenderBody()
-                <div class="col-sm-2">
-                    @{ Html.RenderPartial("_Cart"); }
+                <div class="col-sm-3">
+                    @if(this.ViewContext.RouteData.Values["controller"].ToString() == "Home")
+                    {
+                        Html.RenderPartial("_Cart");
+                    }
                 </div>
             </div>
         </div>

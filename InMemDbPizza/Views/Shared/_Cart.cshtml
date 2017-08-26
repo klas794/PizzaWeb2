@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
+﻿@model InMemDbPizza.Models.MenuViewModel
 
 
 <p>
@@ -13,11 +8,38 @@
             Cart
         </li>
         <li class="list-group-item">
-            <p>...</p>
-            <hr />
-            <p>...</p>
-            <hr />
-            <p>...</p>
+            
+            @if(Model.Cart.CartItems.Count == 0)
+            {
+                <p>Empty cart #@Model.Cart.CartId</p>
+            }
+            else
+            {
+                @foreach (var item in Model.Cart.CartItems)
+                {
+                    <p>
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <a asp-action="EditDish" asp-controller="Cart" asp-route-cartItemId="@item.CartItemId">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                                @item.Dish.Name (@item.Quantity)
+                            </div>
+                            <div class="col-sm-3">
+                                @(item.Dish.Price * item.Quantity)
+                            </div>
+                        </div>
+                    </p>
+                }
+                <hr />
+                <p>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            Total: @Model.Cart.CartItems.Sum(x => x.Dish.Price * x.Quantity) kr
+                        </div>
+                    </div>
+                </p>
+            }
             <hr />
             <a href="#" class="btn btn-default btn-md">
                 <span class="glyphicon glyphicon-shopping-cart"></span> Buy now

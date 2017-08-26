@@ -15,7 +15,7 @@
                 <a asp-action="Index" asp-controller="Home">
                     All pizzas
                 </a>
-            </liclass="list-group-item">
+            </li>
 
             @foreach (var category in Model.Categories)
             {
@@ -28,9 +28,9 @@
         </ul>
     </p>
 </div>
-<div class="col-sm-8">
+<div class="col-sm-7">
     <p>
-        <form>
+        <form asp-action="CartAddToDish" asp-controller="Cart" >
         <ul class="list-group">
             <li class="list-group-item list-group-item-warning">
                 @(Model.Category == null ? "All pizzas": Model.Category.Name)
@@ -43,7 +43,7 @@
                     <div class="col-sm-1">
                         <img src="~/images/pizza-slice.png" style="height: 30px" />
                     </div>
-                    <div class="col-sm-8">
+                    <div class="col-sm-7">
                         <p>@item.Name<text>,</text> @item.Price kr</p>
                         @*<p>
                         <i>
@@ -54,14 +54,14 @@
                         </i>
                         </p>*@
                     </div>
-                    <div class="col-sm-3 row">
+                    <div class="col-sm-4 row">
                         <div class="col-sm-5">
-                            <button type="button" class="btn btn-default btn-sm float-right" name="action-edit">
+                            <button type="submit" class="btn btn-default btn-sm float-right" name="submit" value="edit-@item.DishId">
                                 <span class="glyphicon glyphicon-shopping-cart"></span> Edit
                             </button>
                         </div>
                         <div class="col-sm-7">
-                            <button type="button" class=" btn btn-default btn-sm float-right" name="action-submit">
+                            <button type="submit" class=" btn btn-default btn-sm float-right" name="submit" value="add-@item.DishId">
                                 <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
                             </button>
                         </div>
