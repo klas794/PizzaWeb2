@@ -1,0 +1,119 @@
+﻿@model ProjectPizzaWeb.Models.ReviewOrderViewModel
+@inject ProjectPizzaWeb.Services.CartItemService cartItemService
+
+@{
+    ViewData["Title"] = "Review Order";
+}
+
+<h2>Review Order</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-warning list-group-item-heading">
+                    Cart
+                </li>
+
+                @if (Model.Cart.CartItems.Count == 0)
+                {
+                    <li class="list-group-item">
+
+                        <p>Empty cart</p>
+
+                    </li>
+                }
+                else
+                {
+                    <li class="list-group-item">
+                        
+                        <h4>Your cart</h4>
+                        <hr />
+
+                        @foreach (var item in Model.Cart.CartItems)
+                        {
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    @item.Dish.Name (@item.Quantity)
+                                </div>
+                                <div class="col-sm-4">
+                                    <span class="pull-right">@(item.Dish.Price * item.Quantity) kr</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @foreach (var ingredient in cartItemService.GetIngredients(item.CartItemId))
+                                    {
+                                        <i>@ingredient.Ingredient.Name<text>, </text></i>
+                                    }
+                                </div>
+                            </div>
+                            <hr />
+                        }
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                Total:
+                                <strong class="pull-right">@Model.Cart.CartItems.Sum(x => x.Dish.Price * x.Quantity) kr</strong>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+
+        </div>
+
+        <div class="col-sm-6">
+            <form>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-warning list-group-item-heading">
+                    Cart
+                </li>
+
+                <li class="list-group-item">
+
+
+                        <h4>Address</h4>
+
+                        <div class="form-group">
+                            <label asp-for="Cart.ApplicationUser.Email"></label>
+                            <input asp-for="Cart.ApplicationUser.Email" class="form-control" />
+                            <span asp-validation-for="Cart.ApplicationUser.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Cart.ApplicationUser.PostalAddress"></label>
+                            <input asp-for="Cart.ApplicationUser.PostalAddress" class="form-control" />
+                            <span asp-validation-for="Cart.ApplicationUser.PostalAddress" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Cart.ApplicationUser.PostalCode"></label>
+                            <input asp-for="Cart.ApplicationUser.PostalCode" class="form-control" />
+                            <span asp-validation-for="Cart.ApplicationUser.PostalCode" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Cart.ApplicationUser.City"></label>
+                            <input asp-for="Cart.ApplicationUser.City" class="form-control" />
+                            <span asp-validation-for="Cart.ApplicationUser.City" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Cart.ApplicationUser.Phone"></label>
+                            <input asp-for="Cart.ApplicationUser.Phone" class="form-control" />
+                            <span asp-validation-for="Cart.ApplicationUser.Phone" class="text-danger"></span>
+                        </div>
+                </li>
+            </ul>
+
+                <hr />
+
+                <a href="#" class="btn btn-default btn-md">
+                    <span class="glyphicon glyphicon-check"></span> Purchase now
+                </a>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+}

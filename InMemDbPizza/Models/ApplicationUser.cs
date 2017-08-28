@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace InMemDbPizza.Models
 {
@@ -15,6 +16,19 @@ namespace InMemDbPizza.Models
         }
 
         public Guid UserId { get; set; }
+
+
+        [Required]
+        public string PostalAddress { get; set; }
+
+        [Required]
+        public string PostalCode { get; set; }
+
+        [Required]
+        public string City { get; set; }
+
+        [Required]
+        public string Phone { get; set; }
     }
 
 }

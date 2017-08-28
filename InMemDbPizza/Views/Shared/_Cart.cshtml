@@ -11,6 +11,8 @@
             
             @if(Model.Cart.CartItems.Count == 0)
             {
+                <hr />
+
                 <p>Empty cart @*#@Model.Cart.CartId*@</p>
             }
             else
@@ -39,12 +41,12 @@
                         <div class="col-sm-12">
                             Total:
                             <span class="pull-right">@Model.Cart.CartItems.Sum(x => x.Dish.Price * x.Quantity) kr</span>
-</div>
+                        </div>
                     </div>
                 </p>
             }
             <hr />
-            <a href="#" class="btn btn-default btn-md">
+            <a asp-action="ReviewOrder" asp-controller="Cart" class="btn btn-default btn-md">
                 <span class="glyphicon glyphicon-shopping-cart"></span> Buy now
             </a>
         </li>

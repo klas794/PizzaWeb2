@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using InMemDbPizza.Models;
 using InMemDbPizza.Models.AccountViewModels;
 using InMemDbPizza.Services;
+using InMemDbPizza.Data;
 
 namespace InMemDbPizza.Controllers
 {
@@ -24,17 +25,21 @@ namespace InMemDbPizza.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            ApplicationDbContext context
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _context = context;
         }
 
         [TempData]
@@ -220,7 +225,17 @@ namespace InMemDbPizza.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                _context.Addresses.Add(model.Address);
+                _context.SaveChanges();
+
+                var user = new ApplicationUser {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    PostalAddress = model.Address.PostalAddress,
+                    PostalCode = model.Address.PostalCode,
+                    City = model.Address.City,
+                    Phone = model.Address.Phone
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -26,6 +26,30 @@
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
+            
+            <h4>Address</h4>
+            
+            <div class="form-group">
+                <label asp-for="Address.PostalAddress"></label>
+                <input asp-for="Address.PostalAddress" class="form-control" />
+                <span asp-validation-for="Address.PostalAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.PostalCode"></label>
+                <input asp-for="Address.PostalCode" class="form-control" />
+                <span asp-validation-for="Address.PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.City"></label>
+                <input asp-for="Address.City" class="form-control" />
+                <span asp-validation-for="Address.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.Phone"></label>
+                <input asp-for="Address.Phone" class="form-control" />
+                <span asp-validation-for="Address.Phone" class="text-danger"></span>
+            </div>
+
             <button type="submit" class="btn btn-default">Register</button>
         </form>
     </div>

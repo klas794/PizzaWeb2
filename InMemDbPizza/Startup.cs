@@ -38,6 +38,7 @@ namespace InMemDbPizza
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<CartService>();
+            services.AddTransient<CartItemService>();
 
             services.AddMvc();
 
