@@ -127,7 +127,7 @@ namespace ProjectPizzaWeb.Controllers
             return View(model);
         }
 
-        public IActionResult EditDish(int cartItemId)
+        public IActionResult EditCartItem(int cartItemId)
         {
             var model = new AddCartItemViewModel();
 
@@ -155,7 +155,7 @@ namespace ProjectPizzaWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditDish(AddCartItemViewModel model)
+        public async Task<IActionResult> EditCartItem(AddCartItemViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -191,6 +191,17 @@ namespace ProjectPizzaWeb.Controllers
                 return RedirectToAction(nameof(Index), "Home");
             }
             return View(model);
+        }
+
+        public IActionResult DeleteCartItem(int cartItemId)
+        {
+            var item = _context.CartItems.Find(cartItemId);
+
+            _context.Remove(item);
+
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index), "Home");
         }
 
     }

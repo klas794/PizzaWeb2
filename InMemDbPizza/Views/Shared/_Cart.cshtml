@@ -11,7 +11,7 @@
             
             @if(Model.Cart.CartItems.Count == 0)
             {
-                <p>Empty cart #@Model.Cart.CartId</p>
+                <p>Empty cart @*#@Model.Cart.CartId*@</p>
             }
             else
             {
@@ -20,7 +20,10 @@
                     <p>
                         <div class="row">
                             <div class="col-sm-8">
-                                <a asp-action="EditDish" asp-controller="Cart" asp-route-cartItemId="@item.CartItemId">
+                                <a asp-action="DeleteCartItem" asp-controller="Cart" asp-route-cartItemId="@item.CartItemId">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </a>
+                                <a asp-action="EditCartItem" asp-controller="Cart" asp-route-cartItemId="@item.CartItemId">
                                     <span class="glyphicon glyphicon-edit"></span></a>
                                 @item.Dish.Name (@item.Quantity)
                             </div>

@@ -55,7 +55,7 @@ namespace InMemDbPizza.Data
                 context.AddRange(categoryGeneral, categoryBudget);
                 context.AddRange(capricciosa, marg, hawaii);
 
-                DbInitializer.AddSeededCart(marg, context);
+                // DbInitializer.AddSeededCart(marg, context);
 
                 context.SaveChanges();
 
