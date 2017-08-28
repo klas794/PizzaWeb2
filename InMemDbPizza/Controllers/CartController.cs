@@ -9,6 +9,7 @@ using InMemDbPizza.Data;
 using InMemDbPizza.Models;
 using InMemDbPizza.Controllers;
 using Microsoft.EntityFrameworkCore;
+using ProjectPizzaWeb.Services;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,10 +18,12 @@ namespace ProjectPizzaWeb.Controllers
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly CartService _cartService;
 
-        public CartController(ApplicationDbContext context)
+        public CartController(ApplicationDbContext context, CartService cartService)
         {
             _context = context;
+            _cartService = cartService;
         }
 
         // GET: /<controller>/
@@ -28,31 +31,7 @@ namespace ProjectPizzaWeb.Controllers
         {
             return View();
         }
-
-        public Cart GetCart()
-        {
-            var cartId = HttpContext.Session.Get<int?>("cartid");
-            Cart cart = null;
-
-            if (cartId == null)
-            {
-                cart = new Cart();
-                HttpContext.Session.Set<int?>("cartid", cart.CartId);
-            }
-            else
-            {
-                cart = _context.Cart.Include(x => x.CartItems).SingleOrDefault(x => x.CartId == cartId);
-            }
-
-            if (cart == null)
-            {
-                cart = new Cart();
-                HttpContext.Session.Set<int?>("cartid", cart.CartId);
-            }
-
-            return cart;
-        }
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CartAddToDish(string submit)
@@ -64,7 +43,7 @@ namespace ProjectPizzaWeb.Controllers
             return RedirectToAction(nameof(AddDish), new { dishId = dishId, act = action });
         }
 
-        public IActionResult AddDish(int dishId, string act)
+        public async Task<IActionResult> AddDish(int dishId, string act)
         {
             var dish = _context.Dishes.SingleOrDefault(x => x.DishId == dishId);
 
@@ -73,10 +52,12 @@ namespace ProjectPizzaWeb.Controllers
                 .Where(x => x.DishId == dishId)
                 .ToList();
 
+            var cart = await _cartService.GetCart(HttpContext.Session, User);
+
             var cartItem = new CartItem() {
                 DishId = dishId,
                 Dish = dish,
-                Cart = GetCart()
+                Cart = cart
             };
 
             if(act == "add")
@@ -133,7 +114,7 @@ namespace ProjectPizzaWeb.Controllers
                     })
                     .ToList();
 
-                var cart = GetCart();
+                var cart = await _cartService.GetCart(HttpContext.Session, User);
                 cart.CartItems.Add(cartItem);
                 
                 _context.Add(cartItem);

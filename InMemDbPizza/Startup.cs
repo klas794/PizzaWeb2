@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using InMemDbPizza.Data;
 using InMemDbPizza.Models;
 using InMemDbPizza.Services;
+using ProjectPizzaWeb.Services;
 
 namespace InMemDbPizza
 {
@@ -36,6 +37,7 @@ namespace InMemDbPizza
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<UserManager<ApplicationUser>>();
+            services.AddTransient<CartService>();
 
             services.AddMvc();
 

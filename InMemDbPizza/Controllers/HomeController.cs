@@ -9,56 +9,33 @@ using InMemDbPizza.Data;
 using ProjectPizzaWeb.Models;
 using ProjectPizzaWeb.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using ProjectPizzaWeb.Services;
 
 namespace InMemDbPizza.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly CartService _cartService;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(
+            ApplicationDbContext context, 
+            UserManager<ApplicationUser> userManager,
+            CartService cartService
+            )
         {
             _context = context;
+            _userManager = userManager;
+            _cartService = cartService;
         }
-
-        public Cart GetCart()
-        {
-            var cartId = HttpContext.Session.Get<int?>("cartid");
-            Cart cart = null;
-
-            if (cartId == null)
-            {
-                cart = _context.Cart
-                    .Include(x => x.CartItems)
-                    .SingleOrDefault();
-
-                //cart = new Cart();
-                //cart = _context.Add(cart);
-                //_context.SaveChanges();
-
-                HttpContext.Session.Set<int?>("cartid", cart.CartId);
-            }
-            else
-            {
-                cart = _context.Cart
-                    .Include(x => x.CartItems)
-                    .SingleOrDefault(x => x.CartId == cartId);
-            }
-
-            if (cart == null)
-            {
-                cart = new Cart();
-                HttpContext.Session.Set<int?>("cartid", cart.CartId);
-            }
-
-            return cart;
-        }
-
-        public IActionResult Index(int? categoryId)
+        
+        public async Task<IActionResult> Index(int? categoryId)
         {
             var model = new MenuViewModel();
 
-            model.Cart = GetCart();
+            model.Cart = await _cartService.GetCart(HttpContext.Session, User); // GetCart();
 
             if(categoryId != null)
             {

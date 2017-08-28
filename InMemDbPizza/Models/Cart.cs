@@ -8,10 +8,10 @@ namespace ProjectPizzaWeb.Models
 {
     public class Cart
     {
-        public Cart()
-        {
-            SessionUserId = Guid.NewGuid();
-        }
+        //public Cart()
+        //{
+        //    SessionUserId = Guid.NewGuid();
+        //}
 
         public int CartId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
