@@ -45,7 +45,7 @@ namespace ProjectPizzaWeb.Services
             return total;
         }
 
-        public int SumExtraIngredients(CartItem cartItem)
+        public int SumExtraIngredientsForOne(CartItem cartItem)
         {
             var originalDishIngredientsCount =
                 _context.Dishes
@@ -56,7 +56,7 @@ namespace ProjectPizzaWeb.Services
 
             var extraIngredientsCount = modifiedDishIngredientsCount - originalDishIngredientsCount;
 
-            return extraIngredientsCount > 0 ? extraIngredientsCount * cartItem.Quantity : 0;
+            return extraIngredientsCount > 0 ? extraIngredientsCount : 0;
         }
     }
 }

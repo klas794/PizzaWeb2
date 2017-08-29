@@ -13,7 +13,7 @@
 
             <ul class="list-group">
                 <li class="list-group-item list-group-item-warning list-group-item-heading">
-                    Cart
+                    <span class="glyphicon glyphicon-check"></span> Cart
                 </li>
 
                 @if (Model.Cart.CartItems.Count == 0)
@@ -33,30 +33,65 @@
 
                         @foreach (var item in Model.Cart.CartItems)
                         {
+                            
+                            var ingredients = cartItemService.GetIngredients(item.CartItemId);
+                            var extraCount = cartItemService.SumExtraIngredientsForOne(item);
+                            
                             <div class="row">
-                                <div class="col-sm-8">
-                                    @item.Dish.Name (@item.Quantity)
+                                <div class="col-sm-1">
+                                    <strong><text>x</text>@item.Quantity</strong>
+                                </div>
+                                <div class="col-sm-7">
+                                    <span>@item.Dish.Name </span>
                                 </div>
                                 <div class="col-sm-4">
                                     <span class="pull-right">@(item.Dish.Price * item.Quantity) kr</span>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12">
-                                    @foreach (var ingredient in cartItemService.GetIngredients(item.CartItemId))
-                                    {
-                                        <i>@ingredient.Ingredient.Name<text>, </text></i>
-                                    }
+                                <div class="col-sm-1">
+                                   
+                                </div>
+                                <div class="col-sm-7">
+                                    <i>
+                                        @foreach (var ingredient in ingredients)
+                                        {
+                                            @ingredient.Ingredient.Name@if (ingredients.Last() != ingredient)
+                                            {
+                                                <text>, </text>
+                                            }
+
+                                        }
+                                        @if (extraCount > 0)
+                                        {
+                                            <text>(+</text>@extraCount<text> extra@(extraCount > 1? "s": null))</text>
+                                        }
+                                    </i>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <i class="pull-right">
+                                        @if (extraCount > 0) {
+                                            <text>+ </text>@(extraCount * 10)<text> kr</text>
+                                        }
+                                    </i>
                                 </div>
                             </div>
                             <hr />
                         }
                     </li>
+
+
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-sm-12">
                                 Total:
-                                <strong class="pull-right">@Model.Cart.CartItems.Sum(x => x.Dish.Price * x.Quantity) kr</strong>
+                                <strong class="pull-right lead">
+                                @(
+                                cartItemService.SumExtraIngredients(Model.Cart.CartItems) * 10 +
+                                Model.Cart.CartItems.Sum(x => x.Dish.Price * x.Quantity))
+                                kr
+                                </strong>
                             </div>
                         </div>
                     </li>
