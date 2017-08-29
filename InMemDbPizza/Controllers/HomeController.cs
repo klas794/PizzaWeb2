@@ -19,16 +19,19 @@ namespace InMemDbPizza.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly CartService _cartService;
+        private readonly CartItemService _cartItemService;
 
         public HomeController(
             ApplicationDbContext context, 
             UserManager<ApplicationUser> userManager,
-            CartService cartService
+            CartService cartService,
+            CartItemService cartItemService
             )
         {
             _context = context;
             _userManager = userManager;
             _cartService = cartService;
+            _cartItemService = cartItemService;
         }
         
         public async Task<IActionResult> Index(int? categoryId)
@@ -37,7 +40,9 @@ namespace InMemDbPizza.Controllers
 
             model.Cart = await _cartService.GetCart(HttpContext.Session, User); // GetCart();
 
-            if(categoryId != null)
+            model.ExtraIngredientsCount = _cartItemService.SumExtraIngredients(model.Cart.CartItems);
+            
+            if (categoryId != null)
             {
                 model.Dishes = _context.Dishes.Where(x => x.CategoryId == categoryId).ToList();
                 model.Category = _context.Category.SingleOrDefault(x => x.CategoryId == categoryId);
@@ -52,6 +57,8 @@ namespace InMemDbPizza.Controllers
             return View(model);
         }
         
+        
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

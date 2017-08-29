@@ -23,5 +23,40 @@ namespace ProjectPizzaWeb.Services
                 .Include(x => x.Ingredient)
                 .Where(x => x.CartItemId == cartItemId).ToList();
         }
+
+        public int SumExtraIngredients(List<CartItem> cartItems)
+        {
+            var total = 0;
+
+            foreach (var item in cartItems)
+            {
+                var originalDishIngredientsCount =
+                    _context.Dishes
+                        .Where(d => d.DishId == item.DishId)
+                        .Select(d => d.CartItems).Count();
+
+                var modifiedDishIngredientsCount = this.GetIngredients(item.CartItemId).Count();
+
+                var extraIngredientsCount = modifiedDishIngredientsCount - originalDishIngredientsCount;
+
+                total += extraIngredientsCount > 0 ? extraIngredientsCount * item.Quantity : 0;
+            }
+
+            return total;
+        }
+
+        public int SumExtraIngredients(CartItem cartItem)
+        {
+            var originalDishIngredientsCount =
+                _context.Dishes
+                    .Where(d => d.DishId == cartItem.DishId)
+                    .Select(d => d.CartItems).Count();
+
+            var modifiedDishIngredientsCount = this.GetIngredients(cartItem.CartItemId).Count();
+
+            var extraIngredientsCount = modifiedDishIngredientsCount - originalDishIngredientsCount;
+
+            return extraIngredientsCount > 0 ? extraIngredientsCount * cartItem.Quantity : 0;
+        }
     }
 }

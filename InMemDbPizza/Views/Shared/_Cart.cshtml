@@ -35,12 +35,29 @@
                         </div>
                     </p>
                 }
+
+                @if (Model.ExtraIngredientsCount > 0)
+                {
+                    <p>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <i>@Model.ExtraIngredientsCount extra ingredients total</i>
+                            </div>
+                            <div class="col-sm-4">
+                                <span class="pull-right">@(Model.ExtraIngredientsCount * 10) kr</span>
+                            </div>
+                        </div>
+                    </p>
+                }
+
                 <hr />
                 <p>
                     <div class="row">
                         <div class="col-sm-12">
                             Total:
-                            <span class="pull-right">@Model.Cart.CartItems.Sum(x => x.Dish.Price * x.Quantity) kr</span>
+                            <span class="pull-right">@(
+                                Model.ExtraIngredientsCount * 10 +
+                                Model.Cart.CartItems.Sum(x => x.Dish.Price * x.Quantity)) kr</span>
                         </div>
                     </div>
                 </p>
