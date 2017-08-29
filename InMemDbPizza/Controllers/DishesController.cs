@@ -146,14 +146,16 @@ namespace InMemDbPizza.Controllers
                     foreach (var choice in dishModel.IngredientsChoices)
                     {
                         var exists = _context.DishIngredients.Any(
-                            x => x.DishId == dishModel.Dish.DishId && x.Ingredient.Name == choice.Ingredient.Name);
+                            x => x.DishId == dishModel.Dish.DishId && 
+                            x.Ingredient.IngredientId == choice.Ingredient.IngredientId);
 
                         if (choice.Checked && !exists)
                         {
                             var dishIngredient = new DishIngredient
                             {
                                 Dish = dishModel.Dish,
-                                Ingredient = _context.Ingredient.SingleOrDefault(x => x.Name == choice.Ingredient.Name)
+                                Ingredient = _context.Ingredient
+                                    .SingleOrDefault(x => x.IngredientId == choice.Ingredient.IngredientId)
                             };
 
                             _context.Add(dishIngredient);
@@ -162,7 +164,8 @@ namespace InMemDbPizza.Controllers
                         else if(!choice.Checked && exists)
                         {
                             var dishIngredient = _context.DishIngredients.SingleOrDefault(
-                                x => x.DishId == dishModel.Dish.DishId && x.Ingredient.Name == choice.Ingredient.Name
+                                x => x.DishId == dishModel.Dish.DishId && 
+                                x.Ingredient.IngredientId == choice.Ingredient.IngredientId
                                 );
 
                             if (dishIngredient != null)

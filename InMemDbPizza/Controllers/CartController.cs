@@ -109,14 +109,21 @@ namespace ProjectPizzaWeb.Controllers
                 cartItem.CartItemIngredients = model.IngredientsChoices
                     .Where(x => x.Checked == true)
                     .Select(x => new CartItemIngredient {
+                        CartItemId = cartItem.CartItemId,
                         CartItem = cartItem,
                         Ingredient = x.Ingredient,
+                        IngredientId = x.Ingredient.IngredientId
                     })
                     .ToList();
 
                 var cart = await _cartService.GetCart(HttpContext.Session, User);
                 cart.CartItems.Add(cartItem);
-                
+
+                foreach (var item in cartItem.CartItemIngredients)
+                {
+                    _context.Add(item);
+                }
+
                 _context.Add(cartItem);
                 _context.Update(cart);
 
@@ -140,7 +147,7 @@ namespace ProjectPizzaWeb.Controllers
                 .ToList();
 
             model.IngredientsChoices =
-                _context.Ingredient
+                _context.Ingredient.Distinct()
                 .Select(x => new IngredientChoice
                 {
                     Ingredient = x,
