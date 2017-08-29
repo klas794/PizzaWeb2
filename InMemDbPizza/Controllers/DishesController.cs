@@ -65,28 +65,43 @@ namespace InMemDbPizza.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateDishViewModel dishModel)
+        public async Task<IActionResult> Create(CreateDishViewModel model)
         {
             if (ModelState.IsValid)
             {
-                dishModel.Dish.DishIngredients = new List<DishIngredient>();
-                foreach (var choice in dishModel.IngredientsChoices)
+                var dish = new Dish
+                {
+                    Name = model.Dish.Name,
+                    Price = model.Dish.Price,
+                    CategoryId = model.Dish.CategoryId,
+                    DishIngredients = new List<DishIngredient>()
+                };
+
+                _context.Add(dish);
+                await _context.SaveChangesAsync();
+
+                foreach (var choice in model.IngredientsChoices)
                 {
                     if(choice.Checked)
                     {
                         var dishIngredient = new DishIngredient {
-                            Dish = dishModel.Dish,
-                            Ingredient = _context.Ingredient.SingleOrDefault( x => x.Name == choice.Ingredient.Name )
+                            Dish = dish,
+                            Ingredient = _context.Ingredient.SingleOrDefault( x => 
+                                x.IngredientId == choice.Ingredient.IngredientId ),
                         };
+
                         _context.Add(dishIngredient);
-                        dishModel.Dish.DishIngredients.Add(dishIngredient);
+                        await _context.SaveChangesAsync();
+
+                        dish.DishIngredients.Add(dishIngredient);
                     }
                 }
-                _context.Add(dishModel.Dish);
+
+                _context.Update(dish);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(dishModel);
+            return View(model);
         }
 
         // GET: Dishes/Edit/5
@@ -97,7 +112,8 @@ namespace InMemDbPizza.Controllers
                 return NotFound();
             }
 
-            var dish = await _context.Dishes.Include(x => x.Category).SingleOrDefaultAsync(m => m.DishId == id);
+            var dish = _context.Dishes.Find(id);
+            
             if (dish == null)
             {
                 return NotFound();
@@ -120,7 +136,7 @@ namespace InMemDbPizza.Controllers
 
             model.Categories = _context.Category.Select(
                 x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString(),
-                    Selected = dish.Category.CategoryId ==  x.CategoryId
+                    Selected = dish.CategoryId ==  x.CategoryId
                 }).ToList();
 
             return View(model);
