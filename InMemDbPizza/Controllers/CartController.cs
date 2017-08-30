@@ -100,9 +100,14 @@ namespace ProjectPizzaWeb.Controllers
             {
                 var cartItem = new CartItem()
                 {
-                    Dish = _context.Dishes.SingleOrDefault(x => x.DishId == model.CartItem.DishId),
+                    Dish = _context.Dishes.Find(model.CartItem.DishId),
                     Quantity = model.CartItem.Quantity
                 };
+
+                var cart = await _cartService.GetCart(HttpContext.Session, User);
+
+                cart.CartItems.Add(cartItem);
+                await _context.SaveChangesAsync();
 
                 cartItem.CartItemIngredients = new List<CartItemIngredient>();
 
@@ -111,21 +116,13 @@ namespace ProjectPizzaWeb.Controllers
                     .Select(x => new CartItemIngredient {
                         CartItemId = cartItem.CartItemId,
                         CartItem = cartItem,
-                        Ingredient = x.Ingredient,
-                        IngredientId = x.Ingredient.IngredientId
+                        IngredientId = x.Ingredient.IngredientId,
+                        Ingredient = _context.Ingredient.Find(x.Ingredient.IngredientId)
                     })
                     .ToList();
 
-                var cart = await _cartService.GetCart(HttpContext.Session, User);
-                cart.CartItems.Add(cartItem);
-
-                foreach (var item in cartItem.CartItemIngredients)
-                {
-                    _context.Add(item);
-                }
-
-                _context.Add(cartItem);
-                _context.Update(cart);
+                _context.AddRange(cartItem.CartItemIngredients);
+                _context.Update(cartItem);
 
                 await _context.SaveChangesAsync();
 
@@ -143,15 +140,17 @@ namespace ProjectPizzaWeb.Controllers
                 .SingleOrDefault(x => x.CartItemId == cartItemId);
 
             var cartItemIngredients = _context.CartItemIngredients
+                .Include(x => x.Ingredient)
                 .Where(x => x.CartItemId == cartItem.CartItemId)
                 .ToList();
 
             model.IngredientsChoices =
-                _context.Ingredient.Distinct()
+                _context.Ingredient
                 .Select(x => new IngredientChoice
                 {
                     Ingredient = x,
-                    Checked = cartItemIngredients.Any(y => y.Ingredient == x)
+                    Checked = cartItemIngredients
+                        .Any(y => y.Ingredient.IngredientId == x.IngredientId && cartItemId == y.CartItemId)
                 })
                 .ToList();
             

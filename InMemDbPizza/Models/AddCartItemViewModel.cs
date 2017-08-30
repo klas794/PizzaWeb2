@@ -15,6 +15,7 @@ namespace InMemDbPizza.Models
 
         public CartItem CartItem { get; set; }
 
+        [Display(Name = "Select ingredients")]
         public List<IngredientChoice> IngredientsChoices { get; set; }
     }
 }

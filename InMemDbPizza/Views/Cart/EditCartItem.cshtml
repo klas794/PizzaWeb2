@@ -1,4 +1,5 @@
 ﻿@model InMemDbPizza.Models.AddCartItemViewModel
+@inject ProjectPizzaWeb.Services.CartItemService cartItemService
 
 @{
     ViewData["Title"] = "Edit cart item";
@@ -18,10 +19,17 @@
                 <label asp-for="IngredientsChoices" class="control-label"></label>
                 @for (int i = 0; i < Model.IngredientsChoices.Count; i++)
                 {
+                    var isExtra = cartItemService.IngredientIsExtra(
+                        Model.CartItem.DishId, Model.IngredientsChoices[i].Ingredient.IngredientId);
+
+                    var extraCostText = (isExtra ? " (+" + Model.IngredientsChoices[i].Ingredient.Price + "kr)": "");
+
                     <div class="form-check">
                         @Html.HiddenFor(x => x.IngredientsChoices[i].Ingredient.IngredientId)
                         @Html.CheckBoxFor(x => x.IngredientsChoices[i].Checked, new { @class = "form-check-input" })
-                        @Html.LabelFor(x => x.IngredientsChoices[i].Checked, Model.IngredientsChoices[i].Ingredient.Name, new { @class = "form-check-label" })
+                        @Html.LabelFor(x => x.IngredientsChoices[i].Checked,
+                            Model.IngredientsChoices[i].Ingredient.Name + extraCostText, 
+                            new { @class = "form-check-label" })
                     </div>
                 }
             </div>

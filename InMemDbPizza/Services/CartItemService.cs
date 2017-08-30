@@ -1,4 +1,5 @@
 ﻿using InMemDbPizza.Data;
+using InMemDbPizza.Models;
 using Microsoft.EntityFrameworkCore;
 using ProjectPizzaWeb.Models;
 using System;
@@ -59,5 +60,34 @@ namespace ProjectPizzaWeb.Services
             return extraIngredientsCount > 0 ? extraIngredientsCount : 0;
         }
 
+        public int SumExtraIngredientsValue(CartItem cartItem)
+        {
+            var originalDishIngredients =
+                _context.DishIngredients
+                    .Include(x => x.Ingredient)
+                    .Where(x => x.DishId == cartItem.DishId)
+                    .Select(x => x.Ingredient).ToList();
+
+            var modifiedDishIngredients = this.GetIngredients(cartItem.CartItemId).Select(x => x.Ingredient).ToList();
+
+            //var extraIngredients = modifiedDishIngredients.Except(originalDishIngredients);
+
+            var extraIngredients = this.GetIngredients(cartItem.CartItemId)
+                .Where(x => NotInOriginalDish(cartItem.DishId , x.IngredientId));
+            
+            return extraIngredients.Sum(x => x.Ingredient.Price);
+
+        }
+
+        private bool NotInOriginalDish(int dishId, int ingredientId)
+        {
+            return !_context.DishIngredients.Any(x => x.DishId == dishId && x.IngredientId == ingredientId);
+        }
+
+        public bool IngredientIsExtra (int dishId, int ingredientId)
+        {
+            return !_context.DishIngredients
+                .Any(x => x.DishId == dishId && x.IngredientId == ingredientId);
+        }
     }
 }

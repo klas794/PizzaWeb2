@@ -36,9 +36,9 @@ namespace InMemDbPizza.Data
                 var marg = new Dish { Category = categoryBudget, Name = "Marguerita", Price = 59 };
                 var hawaii = new Dish { Category = categoryGeneral, Name = "Hawaii", Price = 49 };
 
-                var tomato = new Ingredient { Name = "Tomato" };
+                var tomato = new Ingredient { Name = "Tomato", Price = 5 };
                 var jalapeno = new Ingredient { Name = "Jalapeno" };
-                var pineapple = new Ingredient { Name = "Pineapple" };
+                var pineapple = new Ingredient { Name = "Pineapple", Price = 15 };
 
                 var capricciosaTomato = new DishIngredient { Dish = capricciosa, Ingredient = tomato };
                 var margJalapeno = new DishIngredient { Dish = marg, Ingredient = jalapeno };

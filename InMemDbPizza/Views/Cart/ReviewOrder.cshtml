@@ -13,7 +13,7 @@
 
             <ul class="list-group">
                 <li class="list-group-item list-group-item-warning list-group-item-heading">
-                    <span class="glyphicon glyphicon-check"></span> Cart
+                    <span class="glyphicon glyphicon-shopping-cart"></span> Cart
                 </li>
 
                 @if (Model.Cart.CartItems.Count == 0)
@@ -30,13 +30,17 @@
                         
                         <h4>Your cart</h4>
                         <hr />
+                        @{ 
+                            var sumExtraIngredientsValue = 0;
+                        }
 
                         @foreach (var item in Model.Cart.CartItems)
                         {
 
                             var ingredients = cartItemService.GetIngredients(item.CartItemId);
                             var extraCount = cartItemService.SumExtraIngredientsForOne(item);
-                            //var extraValue = cartItemService.SumExtraIngredientsValue(item);
+                            var extraValue = cartItemService.SumExtraIngredientsValue(item);
+                            sumExtraIngredientsValue += extraValue;
 
                             <div class="row">
                                 <div class="col-sm-1">
@@ -73,7 +77,7 @@
                                 <div class="col-sm-4">
                                     <i class="pull-right">
                                         @if (extraCount > 0) {
-                                            <text>+ </text>@(extraCount * 10)<text> kr</text>
+                                            <text>+ </text>@(extraValue)<text> kr</text>
                                         }
                                     </i>
                                 </div>
@@ -89,7 +93,7 @@
                                 Total:
                                 <strong class="pull-right lead">
                                 @(
-                                cartItemService.SumExtraIngredients(Model.Cart.CartItems) * 10 +
+                                sumExtraIngredientsValue +
                                 Model.Cart.CartItems.Sum(x => x.Dish.Price * x.Quantity))
                                 kr
                                 </strong>
