@@ -31,7 +31,7 @@
                         <h4>Your cart</h4>
                         <hr />
                         @{ 
-                            var sumExtraIngredientsValue = 0;
+                            var checkoutPrice = 0;
                         }
 
                         @foreach (var item in Model.Cart.CartItems)
@@ -40,7 +40,7 @@
                             var ingredients = cartItemService.GetIngredients(item.CartItemId);
                             var extraCount = cartItemService.SumExtraIngredientsForOne(item);
                             var extraValue = cartItemService.SumExtraIngredientsValue(item);
-                            sumExtraIngredientsValue += extraValue;
+                            checkoutPrice += (extraValue + item.Dish.Price) * item.Quantity;
 
                             <div class="row">
                                 <div class="col-sm-1">
@@ -50,7 +50,7 @@
                                     <span>@item.Dish.Name </span>
                                 </div>
                                 <div class="col-sm-4">
-                                    <span class="pull-right">@(item.Dish.Price * item.Quantity) kr</span>
+                                    <span class="pull-right">@item.Dish.Price kr</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -92,10 +92,7 @@
                             <div class="col-sm-12">
                                 Total:
                                 <strong class="pull-right lead">
-                                @(
-                                sumExtraIngredientsValue +
-                                Model.Cart.CartItems.Sum(x => x.Dish.Price * x.Quantity))
-                                kr
+                                @checkoutPrice kr
                                 </strong>
                             </div>
                         </div>
