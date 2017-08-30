@@ -33,7 +33,7 @@ namespace ProjectPizzaWeb.Services
                 var originalDishIngredientsCount =
                     _context.Dishes
                         .Where(d => d.DishId == item.DishId)
-                        .Select(d => d.CartItems).Count();
+                        .Select(d => d.DishIngredients).Count();
 
                 var modifiedDishIngredientsCount = this.GetIngredients(item.CartItemId).Count();
 
@@ -50,7 +50,7 @@ namespace ProjectPizzaWeb.Services
             var originalDishIngredientsCount =
                 _context.Dishes
                     .Where(d => d.DishId == cartItem.DishId)
-                    .Select(d => d.CartItems).Count();
+                    .Select(d => d.DishIngredients).Count();
 
             var modifiedDishIngredientsCount = this.GetIngredients(cartItem.CartItemId).Count();
 
@@ -58,5 +58,6 @@ namespace ProjectPizzaWeb.Services
 
             return extraIngredientsCount > 0 ? extraIngredientsCount : 0;
         }
+
     }
 }

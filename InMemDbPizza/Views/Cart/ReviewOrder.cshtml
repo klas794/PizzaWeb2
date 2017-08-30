@@ -33,10 +33,11 @@
 
                         @foreach (var item in Model.Cart.CartItems)
                         {
-                            
+
                             var ingredients = cartItemService.GetIngredients(item.CartItemId);
                             var extraCount = cartItemService.SumExtraIngredientsForOne(item);
-                            
+                            //var extraValue = cartItemService.SumExtraIngredientsValue(item);
+
                             <div class="row">
                                 <div class="col-sm-1">
                                     <strong><text>x</text>@item.Quantity</strong>
