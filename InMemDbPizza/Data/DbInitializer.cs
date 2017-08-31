@@ -30,6 +30,9 @@ namespace InMemDbPizza.Data
 
             if (context.Dishes.ToList().Count == 0)
             {
+                var visa = new PaymentChoice { Name = "Visa" };
+                var mastercart = new PaymentChoice { Name = "Mastercard" };
+
                 var categoryGeneral = new Category { Name = "General" };
                 var categoryBudget = new Category { Name = "Budget" };
                 var categoryExpensive = new Category { Name = "Delux" };
@@ -83,6 +86,7 @@ namespace InMemDbPizza.Data
                 context.AddRange(tomato, jalapeno, pineapple, ham, onion, blackPepper, mushroom, bea, chicken);
                 context.AddRange(categoryGeneral, categoryBudget, categoryExpensive);
                 context.AddRange(capricciosa, marg, hawaii, gudfadern, diablo);
+                context.AddRange(visa, mastercart);
 
                 // DbInitializer.AddSeededCart(marg, context);
 

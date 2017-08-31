@@ -215,8 +215,19 @@ namespace ProjectPizzaWeb.Controllers
         public async Task<IActionResult> ReviewOrder(ReviewOrderViewModel model)
         {
             model = new ReviewOrderViewModel();
+            
+            model.Cart = await _cartService.GetCart(HttpContext.Session, HttpContext.User);
 
-            model.Cart = await _cartService.GetCart(HttpContext.Session, User);
+            model.PaymentChoices = await _context.PaymentChoices.ToListAsync();
+
+            if(model.Cart.ApplicationUser != null)
+            {
+                model.Email = model.Cart.ApplicationUser.Email;
+                model.PostalAddress = model.Cart.ApplicationUser.PostalAddress;
+                model.PostalCode = model.Cart.ApplicationUser.PostalCode;
+                model.City = model.Cart.ApplicationUser.City;
+                model.PhoneNumber = model.Cart.ApplicationUser.PhoneNumber;
+            }
 
             return View(model);
         }

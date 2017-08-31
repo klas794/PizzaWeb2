@@ -234,7 +234,6 @@ namespace InMemDbPizza.Controllers
                     PostalAddress = model.Address.PostalAddress,
                     PostalCode = model.Address.PostalCode,
                     City = model.Address.City,
-                    Phone = model.Address.Phone
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

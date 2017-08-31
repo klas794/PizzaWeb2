@@ -27,8 +27,6 @@ namespace InMemDbPizza.Models
         [Required]
         public string City { get; set; }
 
-        [Required]
-        public string Phone { get; set; }
     }
 
 }

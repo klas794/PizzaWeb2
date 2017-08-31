@@ -60,6 +60,9 @@ namespace InMemDbPizza.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,
+                PostalAddress = user.PostalAddress,
+                PostalCode = user.PostalCode,
+                City = user.City,
                 StatusMessage = StatusMessage
             };
 
@@ -100,6 +103,11 @@ namespace InMemDbPizza.Controllers
                     throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
                 }
             }
+
+            user.PostalAddress = model.PostalAddress;
+            user.PostalCode = model.PostalCode;
+            user.City = model.City;
+            await _userManager.UpdateAsync(user);
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));
