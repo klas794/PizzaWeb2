@@ -44,15 +44,22 @@ namespace InMemDbPizza.Controllers
             
             if (categoryId != null)
             {
-                model.Dishes = _context.Dishes.Where(x => x.CategoryId == categoryId).ToList();
+                model.Dishes = _context.Dishes
+                    .Where(x => x.CategoryId == categoryId)
+                    .OrderBy(x => x.Name)
+                    .ToList();
                 model.Category = _context.Category.SingleOrDefault(x => x.CategoryId == categoryId);
             }
             else
             {
-                model.Dishes = _context.Dishes.ToList();
+                model.Dishes = _context.Dishes
+                    .OrderBy(x => x.Name)
+                    .ToList();
             }
 
-            model.Categories = _context.Category.ToList();
+            model.Categories = _context.Category
+                .OrderBy(x => x.Name)
+                .ToList();
 
             return View(model);
         }

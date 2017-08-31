@@ -22,7 +22,9 @@ namespace ProjectPizzaWeb.Controllers
         // GET: Ingredients
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Ingredient.ToListAsync());
+            return View(await _context.Ingredient
+                .OrderBy(x => x.Name)
+                .ToListAsync());
         }
 
         // GET: Ingredients/Details/5

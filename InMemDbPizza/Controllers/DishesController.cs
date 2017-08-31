@@ -23,7 +23,10 @@ namespace InMemDbPizza.Controllers
         // GET: Dishes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Dishes.ToListAsync());
+            return View(
+                await _context.Dishes
+                .OrderBy(x => x.Name)
+                .ToListAsync());
         }
 
         // GET: Dishes/Details/5
@@ -53,9 +56,15 @@ namespace InMemDbPizza.Controllers
         {
             var model = new CreateDishViewModel();
 
-            model.Categories = _context.Category.Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() }).ToList();
+            model.Categories = _context.Category
+                .Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() })
+                .OrderBy(x => x.Text)
+                .ToList();
 
-            model.IngredientsChoices = _context.Ingredient.Select(x => new IngredientChoice { Ingredient = x }).ToList();
+            model.IngredientsChoices = _context.Ingredient
+                .Select(x => new IngredientChoice { Ingredient = x })
+                .OrderBy(x => x.Ingredient.Name)
+                .ToList();
 
             return View(model);
         }
@@ -132,12 +141,16 @@ namespace InMemDbPizza.Controllers
                     Ingredient = x,
                     Checked = dishIngredients.Any(y => y.Ingredient == x)
                 })
+                .OrderBy(x => x.Ingredient.Name)
                 .ToList();
 
             model.Categories = _context.Category.Select(
-                x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString(),
+                x => new SelectListItem {
+                    Text = x.Name, Value = x.CategoryId.ToString(),
                     Selected = dish.CategoryId ==  x.CategoryId
-                }).ToList();
+                })
+                .OrderBy(x => x.Text)
+                .ToList();
 
             return View(model);
         }
