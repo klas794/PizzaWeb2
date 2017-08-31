@@ -85,6 +85,7 @@ namespace ProjectPizzaWeb.Controllers
                     Ingredient = x,
                     Checked = dishIngredients.Any(y => y.Ingredient == x)
                 })
+                .OrderBy(x => x.Ingredient.Name)
                 .ToList();
 
             model.CartItem = cartItem;
@@ -152,6 +153,7 @@ namespace ProjectPizzaWeb.Controllers
                     Checked = cartItemIngredients
                         .Any(y => y.Ingredient.IngredientId == x.IngredientId && cartItemId == y.CartItemId)
                 })
+                .OrderBy(x => x.Ingredient.Name)
                 .ToList();
             
             model.CartItem = cartItem;

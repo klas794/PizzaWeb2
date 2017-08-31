@@ -22,7 +22,7 @@
                 @foreach (var item in Model.Cart.CartItems)
                 {
                     var extraValue = cartItemService.SumExtraIngredientsValue(item);
-                    extrasTotal += extraValue;
+                    extrasTotal += extraValue * item.Quantity;
                     checkoutPrice += (extraValue + item.Dish.Price) * item.Quantity;
 
                     <p>

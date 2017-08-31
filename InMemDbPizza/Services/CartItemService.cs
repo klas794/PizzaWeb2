@@ -32,9 +32,9 @@ namespace ProjectPizzaWeb.Services
             foreach (var item in cartItems)
             {
                 var originalDishIngredientsCount =
-                    _context.Dishes
+                    _context.DishIngredients
                         .Where(d => d.DishId == item.DishId)
-                        .Select(d => d.DishIngredients).Count();
+                        .Count();
 
                 var modifiedDishIngredientsCount = this.GetIngredients(item.CartItemId).Count();
 
