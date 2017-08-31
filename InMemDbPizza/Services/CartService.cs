@@ -40,16 +40,7 @@ namespace ProjectPizzaWeb.Services
 
             if (cart == null)
             {
-                
-                cart = new Cart() {
-                    ApplicationUserId = userId,
-                    CartItems = new List<CartItem>()
-                };
-
-                _context.Add(cart);
-                _context.SaveChanges();
-
-                session.Set<int?>("cartid", cart.CartId);
+                cart = await this.CreateCart(session, user);
             }
 
             if(userId != cart.ApplicationUserId)
@@ -61,5 +52,26 @@ namespace ProjectPizzaWeb.Services
 
             return cart;
         }
+
+        public async Task<Cart> CreateCart(ISession session, ClaimsPrincipal user)
+        {
+            var userId = _userManager.GetUserId(user);
+
+            var appUser = await _userManager.GetUserAsync(user);
+
+            var cart = new Cart()
+            {
+                ApplicationUserId = userId,
+                CartItems = new List<CartItem>()
+            };
+
+            _context.Add(cart);
+            _context.SaveChanges();
+
+            session.Set<int?>("cartid", cart.CartId);
+
+            return cart;
+        }
+       
     }
 }

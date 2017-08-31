@@ -1,0 +1,134 @@
+﻿@model ProjectPizzaWeb.Models.Order
+@inject ProjectPizzaWeb.Services.CartItemService cartItemService
+
+<h1>Thank you!</h1>
+
+<p class="">Your order has been made</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-warning list-group-item-heading">
+                    <span class="glyphicon glyphicon-shopping-cart"></span> Order
+                </li>
+
+                    <li class="list-group-item">
+
+                        <h4>Your order items</h4>
+                        <hr />
+                        @{
+                            var checkoutPrice = 0;
+                        }
+
+                        @foreach (var item in Model.CartItems)
+                        {
+
+                            var ingredients = cartItemService.GetIngredients(item.CartItemId).OrderBy(x => x.Ingredient.Name);
+                            var extraCount = cartItemService.SumExtraIngredientsForOne(item);
+                            var extraValue = cartItemService.SumExtraIngredientsValue(item);
+                            checkoutPrice += (extraValue + item.Dish.Price) * item.Quantity;
+
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <strong><text>x</text>@item.Quantity</strong>
+                                </div>
+                                <div class="col-sm-7">
+                                    <span>@item.Dish.Name </span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span class="pull-right">@item.Dish.Price kr</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-1">
+
+                                </div>
+                                <div class="col-sm-7">
+                                    <i>
+                                        @foreach (var ingredient in ingredients)
+                                        {
+                                            <span class="@(cartItemService.IngredientIsExtra(item.DishId, ingredient.IngredientId) ? "text-success": "")">
+                                                @ingredient.Ingredient.Name@if (ingredients.Last() != ingredient)
+                                                {
+                                                    <text>, </text>
+                                                }
+                                            </span>
+                                        }
+                                        @if (extraCount > 0)
+                                        {
+                                            <text>(+</text>@extraCount<text>&nbsp;<span class="text-success">extra@(extraCount > 1 ? "s" : null)</span>)</text>
+                                        }
+                                    </i>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <i class="pull-right">
+                                        @if (extraCount > 0)
+                                        {
+                                            <text>+ </text>@(extraValue)<text> kr</text>
+                                        }
+                                    </i>
+                                </div>
+                            </div>
+                            <hr />
+                        }
+                    </li>
+
+
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                Total:
+                                <strong class="pull-right lead">
+                                    @checkoutPrice kr
+                                </strong>
+                            </div>
+                        </div>
+                    </li>
+            </ul>
+
+        </div>
+
+        <div class="col-sm-6">
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-warning list-group-item-heading">
+                        Address
+                    </li>
+
+                    <li class="list-group-item">
+
+                        <h4>Address</h4>
+
+                        <div class="form-group">
+                            Email
+                        </div>
+                        <div class="form-group">
+                            Postal address
+                        </div>
+                        <div class="form-group">
+                            Postal code
+                        </div>
+                        <div class="form-group">
+                            City
+                        </div>
+                        <div class="form-group">
+                            Phone #
+                        </div>
+                    </li>
+                </ul>
+
+                <hr />
+
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-heading list-group-item-warning">
+                        Payment choice
+                    </li>
+                    <li class="list-group-item">
+                        @Model.Payment.PaymentType.Name
+                    </li>
+                </ul>
+        </div>
+    </div>
+</div>

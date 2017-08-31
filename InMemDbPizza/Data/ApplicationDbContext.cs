@@ -78,6 +78,8 @@ namespace InMemDbPizza.Data
         public DbSet<CartItemIngredient> CartItemIngredients { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<PaymentChoice> PaymentChoices { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
     }
 }

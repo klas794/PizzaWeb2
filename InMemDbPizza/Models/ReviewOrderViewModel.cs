@@ -10,7 +10,15 @@ namespace ProjectPizzaWeb.Models
     {
         public Cart Cart { get; set; }
         public List<PaymentChoice> PaymentChoices { get; set; }
+
+        [Required]
         public PaymentChoice PaymentChoice { get; set; }
+
+        [Required]
+        public int CardNo { get; set; }
+
+        [Required]
+        public int CardControlNumber { get; set; }
 
         [Required]
         public string Email { get; set; }

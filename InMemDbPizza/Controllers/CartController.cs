@@ -232,5 +232,32 @@ namespace ProjectPizzaWeb.Controllers
             return View(model);
         }
 
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> PlaceOrder(ReviewOrderViewModel model)
+        {
+            var payment = new Payment
+            {
+                CardNo = model.CardNo,
+                CardControlNumber = model.CardControlNumber
+            };
+
+            _context.Add(payment);
+            await _context.SaveChangesAsync();
+
+            var order = new Order
+            {
+                Payment = payment,
+                CartItems = model.Cart.CartItems
+            };
+
+            _context.Add(order);
+            await _context.SaveChangesAsync();
+
+            await _cartService.CreateCart(HttpContext.Session, HttpContext.User);
+
+            return RedirectToAction("OrderConfirmation", order);
+        }
+
     }
 }
