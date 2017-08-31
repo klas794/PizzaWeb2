@@ -37,7 +37,7 @@
                         @foreach (var item in Model.Cart.CartItems)
                         {
 
-                            var ingredients = cartItemService.GetIngredients(item.CartItemId);
+                            var ingredients = cartItemService.GetIngredients(item.CartItemId).OrderBy(x => x.Ingredient.Name);
                             var extraCount = cartItemService.SumExtraIngredientsForOne(item);
                             var extraValue = cartItemService.SumExtraIngredientsValue(item);
                             checkoutPrice += (extraValue + item.Dish.Price) * item.Quantity;
@@ -61,15 +61,16 @@
                                     <i>
                                         @foreach (var ingredient in ingredients)
                                         {
+                                            <span class="@(cartItemService.IngredientIsExtra(item.DishId, ingredient.IngredientId) ? "text-success": "")">
                                             @ingredient.Ingredient.Name@if (ingredients.Last() != ingredient)
-                                            {
-                                                <text>, </text>
-                                            }
-
+                                        {
+                                            <text>, </text>
+                                        }
+                                        </span>
                                         }
                                         @if (extraCount > 0)
                                         {
-                                            <text>(+</text>@extraCount<text> extra@(extraCount > 1? "s": null))</text>
+                                            <text>(+</text>@extraCount<text>&nbsp;<span class="text-success">extra@(extraCount > 1 ? "s" : null)</span>)</text>
                                         }
                                     </i>
 

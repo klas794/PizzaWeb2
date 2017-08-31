@@ -49,9 +49,9 @@ namespace ProjectPizzaWeb.Services
         public int SumExtraIngredientsForOne(CartItem cartItem)
         {
             var originalDishIngredientsCount =
-                _context.Dishes
-                    .Where(d => d.DishId == cartItem.DishId)
-                    .Select(d => d.DishIngredients).Count();
+                _context.DishIngredients
+                    .Where(x => x.DishId == cartItem.DishId)
+                    .Count();
 
             var modifiedDishIngredientsCount = this.GetIngredients(cartItem.CartItemId).Count();
 
