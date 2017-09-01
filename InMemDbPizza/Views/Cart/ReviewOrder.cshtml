@@ -7,164 +7,185 @@
 
 <h2>Review Order</h2>
 
-<div class="container">
-    <div class="row">
-        <div class="col-sm-6">
+<form asp-action="PlaceOrder">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
 
-            <ul class="list-group">
-                <li class="list-group-item list-group-item-warning list-group-item-heading">
-                    <span class="glyphicon glyphicon-shopping-cart"></span> Cart
-                </li>
-
-                @if (Model.Cart.CartItems.Count == 0)
-                {
-                    <li class="list-group-item">
-
-                        <p>Empty cart</p>
-
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-warning list-group-item-heading">
+                        <span class="glyphicon glyphicon-shopping-cart"></span> Cart
                     </li>
-                }
-                else
-                {
-                    <li class="list-group-item">
+
+                    @if (Model.Cart.CartItems.Count == 0)
+                    {
+                        <li class="list-group-item">
+
+                            <p>Empty cart</p>
+
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="list-group-item">
                         
-                        <h4>Your cart</h4>
-                        <hr />
-                        @{ 
-                            var checkoutPrice = 0;
-                        }
-
-                        @foreach (var item in Model.Cart.CartItems)
-                        {
-
-                            var ingredients = cartItemService.GetIngredients(item.CartItemId).OrderBy(x => x.Ingredient.Name);
-                            var extraCount = cartItemService.SumExtraIngredientsForOne(item);
-                            var extraValue = cartItemService.SumExtraIngredientsValue(item);
-                            checkoutPrice += (extraValue + item.Dish.Price) * item.Quantity;
-
-                            <div class="row">
-                                <div class="col-sm-1">
-                                    <strong><text>x</text>@item.Quantity</strong>
-                                </div>
-                                <div class="col-sm-7">
-                                    <span>@item.Dish.Name </span>
-                                </div>
-                                <div class="col-sm-4">
-                                    <span class="pull-right">@item.Dish.Price kr</span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-1">
-                                   
-                                </div>
-                                <div class="col-sm-7">
-                                    <i>
-                                        @foreach (var ingredient in ingredients)
-                                        {
-                                            <span class="@(cartItemService.IngredientIsExtra(item.DishId, ingredient.IngredientId) ? "text-success": "")">
-                                            @ingredient.Ingredient.Name@if (ingredients.Last() != ingredient)
-                                        {
-                                            <text>, </text>
-                                        }
-                                        </span>
-                                        }
-                                        @if (extraCount > 0)
-                                        {
-                                            <text>(+</text>@extraCount<text>&nbsp;<span class="text-success">extra@(extraCount > 1 ? "s" : null)</span>)</text>
-                                        }
-                                    </i>
-
-                                </div>
-                                <div class="col-sm-4">
-                                    <i class="pull-right">
-                                        @if (extraCount > 0) {
-                                            <text>+ </text>@(extraValue)<text> kr</text>
-                                        }
-                                    </i>
-                                </div>
-                            </div>
+                            <h4>Your cart</h4>
                             <hr />
-                        }
+                            @{ 
+                                var checkoutPrice = 0;
+                            }
+
+                            @foreach (var item in Model.Cart.CartItems)
+                            {
+
+                                var ingredients = cartItemService.GetIngredients(item.CartItemId).OrderBy(x => x.Ingredient.Name);
+                                var extraCount = cartItemService.SumExtraIngredientsForOne(item);
+                                var extraValue = cartItemService.SumExtraIngredientsValue(item);
+                                checkoutPrice += (extraValue + item.Dish.Price) * item.Quantity;
+
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                        <strong><text>x</text>@item.Quantity</strong>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <span>@item.Dish.Name </span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span class="pull-right">@item.Dish.Price kr</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                   
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <i>
+                                            @foreach (var ingredient in ingredients)
+                                            {
+                                                <span class="@(cartItemService.IngredientIsExtra(item.DishId, ingredient.IngredientId) ? "text-success": "")">
+                                                @ingredient.Ingredient.Name@if (ingredients.Last() != ingredient)
+                                            {
+                                                <text>, </text>
+                                            }
+                                            </span>
+                                            }
+                                            @if (extraCount > 0)
+                                            {
+                                                <text>(+</text>@extraCount<text>&nbsp;<span class="text-success">extra@(extraCount > 1 ? "s" : null)</span>)</text>
+                                            }
+                                        </i>
+
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <i class="pull-right">
+                                            @if (extraCount > 0) {
+                                                <text>+ </text>@(extraValue)<text> kr</text>
+                                            }
+                                        </i>
+                                    </div>
+                                </div>
+                                <hr />
+                            }
+                        </li>
+
+
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    Total:
+                                    <strong class="pull-right lead">
+                                    @checkoutPrice kr
+                                    </strong>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+
+            </div>
+
+            <div class="col-sm-6">
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-warning list-group-item-heading">
+                        Address
                     </li>
 
-
                     <li class="list-group-item">
+
+                        <h4>Address</h4>
+                        <div class="form-group">
+                            <label asp-for="Name"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="PostalAddress"></label>
+                            <input asp-for="PostalAddress" class="form-control" />
+                            <span asp-validation-for="PostalAddress" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="PostalCode"></label>
+                            <input asp-for="PostalCode" class="form-control" />
+                            <span asp-validation-for="PostalCode" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="City"></label>
+                            <input asp-for="City" class="form-control" />
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="PhoneNumber"></label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </li>
+                </ul>
+
+                <hr />
+
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-heading list-group-item-warning">
+                        Payment choice
+                    </li>
+                    <li class="list-group-item">
+                        @foreach (var item in Model.PaymentChoices)
+                        {
+                            <input asp-for="PaymentChoice.PaymentChoiceId" type="radio" value="@item.PaymentChoiceId" />
+                            @item.Name
+                        }
+
                         <div class="row">
-                            <div class="col-sm-12">
-                                Total:
-                                <strong class="pull-right lead">
-                                @checkoutPrice kr
-                                </strong>
+                            <div class="col-sm-9">
+                                <div class="form-group">
+                                    <label asp-for="CardNo"></label>
+                                    <input asp-for="CardNo" class="form-control" />
+                                    <span asp-validation-for="CardNo" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label asp-for="CardControlNumber"></label>
+                                    <input asp-for="CardControlNumber" class="form-control" />
+                                    <span asp-validation-for="CardControlNumber" class="text-danger"></span>
+                                </div>
                             </div>
                         </div>
                     </li>
-                }
-            </ul>
+                </ul>
 
+                <button class="btn btn-default btn-md" type="submit">
+                    <span class="glyphicon glyphicon-check"></span> Purchase now
+                </button>
+
+            </div>
         </div>
-
-        <div class="col-sm-6">
-            <form asp-action="PlaceOrder">
-            <ul class="list-group">
-                <li class="list-group-item list-group-item-warning list-group-item-heading">
-                    Address
-                </li>
-
-                <li class="list-group-item">
-
-                    <h4>Address</h4>
-
-                    <div class="form-group">
-                        <label asp-for="Email"></label>
-                        <input asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="PostalAddress"></label>
-                        <input asp-for="PostalAddress" class="form-control" />
-                        <span asp-validation-for="PostalAddress" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="PostalCode"></label>
-                        <input asp-for="PostalCode" class="form-control" />
-                        <span asp-validation-for="PostalCode" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="City"></label>
-                        <input asp-for="City" class="form-control" />
-                        <span asp-validation-for="City" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="PhoneNumber"></label>
-                        <input asp-for="PhoneNumber" class="form-control" />
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
-                </li>
-            </ul>
-
-            <hr />
-
-            <ul class="list-group">
-                <li class="list-group-item list-group-item-heading list-group-item-warning">
-                    Payment choice
-                </li>
-                <li class="list-group-item">
-                    @foreach (var item in Model.PaymentChoices)
-                    {
-                        <input asp-for="PaymentChoice" type="radio" value="@item.PaymentChoiceId" />
-                        @item.Name
-                    }
-                </li>
-            </ul>
-
-            <a href="#" class="btn btn-default btn-md">
-                <span class="glyphicon glyphicon-check"></span> Purchase now
-            </a>
-
-            </form>
-        </div>
-    </div>
 </div>
+</form>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")

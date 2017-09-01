@@ -239,16 +239,33 @@ namespace ProjectPizzaWeb.Controllers
             var payment = new Payment
             {
                 CardNo = model.CardNo,
-                CardControlNumber = model.CardControlNumber
+                CardControlNumber = model.CardControlNumber,
+                PaymentType = _context.PaymentChoices.Find( model.PaymentChoice.PaymentChoiceId )
             };
 
             _context.Add(payment);
             await _context.SaveChangesAsync();
 
+            var address = new Address
+            {
+                Name = model.Name,
+                PostalAddress = model.PostalAddress,
+                PostalCode = model.PostalCode,
+                City = model.City,
+                Phone = model.PhoneNumber,
+                Email = model.Email
+            };
+
+            _context.Add(address);
+            await _context.SaveChangesAsync();
+
+            model.Cart = await _cartService.GetCart(HttpContext.Session, User);
+
             var order = new Order
             {
                 Payment = payment,
-                CartItems = model.Cart.CartItems
+                Cart = model.Cart,
+                Address = address
             };
 
             _context.Add(order);
@@ -257,6 +274,22 @@ namespace ProjectPizzaWeb.Controllers
             await _cartService.CreateCart(HttpContext.Session, HttpContext.User);
 
             return RedirectToAction("OrderConfirmation", order);
+        }
+
+        public IActionResult OrderConfirmation(Order order)
+        {
+            order.Cart = _context.Cart
+                .Include(x => x.CartItems)
+                .ThenInclude(x => x.Dish)
+                .SingleOrDefault(x => x.CartId == order.CartId);
+
+            order.Payment = _context.Payments
+                .Include(x => x.PaymentType)
+                .SingleOrDefault(x => x.PaymentId == order.PaymentId);
+
+            order.Address = _context.Addresses.Find(order.AddressId);
+
+            return View(order);
         }
 
     }

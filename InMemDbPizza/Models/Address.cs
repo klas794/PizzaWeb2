@@ -7,6 +7,10 @@ namespace InMemDbPizza.Models
         public int AddressId { get; set; }
 
         [Required]
+        [Display(Name = "Full name")]
+        public string Name { get; set; }
+
+        [Required]
         [Display(Name = "Street")]
         public string PostalAddress { get; set; }
 
@@ -22,5 +26,9 @@ namespace InMemDbPizza.Models
         [Required]
         [Display(Name = "Phone #")]
         public string Phone { get; set; }
+
+        [Required]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
     }
 }
