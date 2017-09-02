@@ -250,9 +250,9 @@ namespace ProjectPizzaWeb.Controllers
             return RedirectToAction(nameof(Index), "Home");
         }
 
-        public async Task<IActionResult> ReviewOrder(ReviewOrderViewModel model)
+        public async Task<IActionResult> ReviewOrder()
         {
-            model = new ReviewOrderViewModel();
+            var model = new ReviewOrderViewModel();
             
             model.Cart = await _cartService.GetCart(HttpContext.Session, HttpContext.User);
 
