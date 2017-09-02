@@ -128,7 +128,12 @@
                         Payment choice
                     </li>
                     <li class="list-group-item">
-                        @Model.Payment.PaymentType.Name
+                        @{ 
+                            string lastDigits = Model.Payment.CardNo.Substring(12);
+                        }
+
+                        @Model.Payment.PaymentType.Name<br />
+                        XXXX-XXXX-XXXX-@lastDigits
                     </li>
                 </ul>
         </div>

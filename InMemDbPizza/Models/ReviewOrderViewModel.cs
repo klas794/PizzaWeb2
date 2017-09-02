@@ -13,14 +13,15 @@ namespace ProjectPizzaWeb.Models
 
         [Required]
         public PaymentChoice PaymentChoice { get; set; }
-
+        
         [Required]
         [Display(Name = "Card #")]
-        public int CardNo { get; set; }
+        [CreditCard]
+        public string CardNo { get; set; }
 
         [Required]
         [Display(Name = "CCV")]
-        public int CardControlNumber { get; set; }
+        public int CCV { get; set; }
 
         [Required]
         [Display(Name = "Full name")]

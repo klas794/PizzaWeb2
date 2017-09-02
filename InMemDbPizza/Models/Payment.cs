@@ -9,7 +9,7 @@ namespace ProjectPizzaWeb.Models
     {
         public int PaymentId { get; set; }
         public PaymentChoice PaymentType { get; set; }
-        public int CardNo { get; set; }
+        public string CardNo { get; set; }
         public int CardControlNumber { get; set; }
     }
 }
