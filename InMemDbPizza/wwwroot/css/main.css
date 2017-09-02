@@ -1,0 +1,11 @@
+﻿nav a:hover, nav a:active {
+    color: grey !important;
+}
+
+nav.navbar {
+    background: white;
+    border: none;
+    margin: 10px 0 0;
+    height: 60px;
+    padding-top: 6px
+}
