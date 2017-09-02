@@ -22,7 +22,10 @@ namespace ProjectPizzaWeb.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Orders.Include(o => o.Address).Include(o => o.Cart).Include(o => o.Payment).ThenInclude(p => p.PaymentType);
+            var applicationDbContext = _context.Orders
+                .Include(o => o.Address).Include(o => o.Cart).Include(o => o.Payment)
+                .ThenInclude(p => p.PaymentType)
+                .OrderByDescending(x => x.OrderTime);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -88,7 +91,7 @@ namespace ProjectPizzaWeb.Controllers
             {
                 return NotFound();
             }
-            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "City", order.AddressId);
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "AddressId", "PostalAddress", order.AddressId);
             ViewData["CartId"] = new SelectList(_context.Cart, "CartId", "CartId", order.CartId);
             ViewData["PaymentId"] = new SelectList(_context.Payments, "PaymentId", "PaymentId", order.PaymentId);
             return View(order);

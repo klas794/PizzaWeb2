@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.OrderTime)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Address)
             </th>
             <th>
@@ -27,6 +30,10 @@
     <tbody>
     @foreach (var item in Model) {
         <tr>
+            <td>
+                @item.OrderTime.ToShortDateString()
+                @item.OrderTime.ToShortTimeString()
+            </td>
             <td>
                 <p>
                     <i>@item.Address.Name</i><br />

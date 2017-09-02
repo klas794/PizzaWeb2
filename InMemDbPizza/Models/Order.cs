@@ -1,6 +1,7 @@
 ﻿using InMemDbPizza.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,5 +19,8 @@ namespace ProjectPizzaWeb.Models
 
         public Address Address { get; set; }
         public int AddressId { get; set; }
+
+        [Display(Name = "Time of order")]
+        public DateTime OrderTime { get; set; }
     }
 }

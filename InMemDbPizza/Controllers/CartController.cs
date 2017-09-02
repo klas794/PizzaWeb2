@@ -303,7 +303,8 @@ namespace ProjectPizzaWeb.Controllers
             {
                 Payment = payment,
                 Cart = model.Cart,
-                Address = address
+                Address = address,
+                OrderTime = DateTime.Now
             };
 
             _context.Add(order);
