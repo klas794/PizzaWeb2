@@ -44,7 +44,7 @@
                         <img src="~/images/pizza-slice.png" style="height: 30px" />
                     </div>
                     <div class="col-sm-7">
-                        <p>@item.Name<text>,</text> @item.Price kr</p>
+                        <p>@item.Name<text>,</text> @Html.DisplayFor(x => item.Price)</p>
                         @*<p>
                         <i>
                             @foreach (var dishIngredient in item.DishIngredients)

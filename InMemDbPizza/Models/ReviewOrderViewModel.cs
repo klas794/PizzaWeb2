@@ -21,13 +21,15 @@ namespace ProjectPizzaWeb.Models
 
         [Required]
         [Display(Name = "CCV")]
-        public int CCV { get; set; }
+        [RegularExpression(@"\d{3}", ErrorMessage = "Enter 3 numbers")]
+        public string CCV { get; set; }
 
         [Required]
         [Display(Name = "Full name")]
         public string Name { get; set; }
 
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]

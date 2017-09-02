@@ -13,8 +13,9 @@
     <div class="col-md-4">
         <form asp-action="EditCartItem">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="CartItem.DishId" type="hidden" value="@Model.CartItem.Dish.DishId" />
-            <input asp-for="CartItem.CartItemId" type="hidden" value="@Model.CartItem.CartItemId" />
+            <input asp-for="CartItem.DishId" type="hidden" />
+            <input asp-for="CartItem.Dish.Name" type="hidden"/>
+            <input asp-for="CartItem.CartItemId" type="hidden"/>
             <div class="form-group">
                 <label asp-for="IngredientsChoices" class="control-label"></label>
                 @for (int i = 0; i < Model.IngredientsChoices.Count; i++)
@@ -26,12 +27,15 @@
 
                     <div class="form-check">
                         @Html.HiddenFor(x => x.IngredientsChoices[i].Ingredient.IngredientId)
+                        @Html.HiddenFor(x => x.IngredientsChoices[i].Ingredient.Name)
+                        @Html.HiddenFor(x => x.IngredientsChoices[i].Ingredient.Price)
                         @Html.CheckBoxFor(x => x.IngredientsChoices[i].Checked, new { @class = "form-check-input" })
                         @Html.LabelFor(x => x.IngredientsChoices[i].Checked,
                             Model.IngredientsChoices[i].Ingredient.Name + extraCostText, 
                             new { @class = "form-check-label", style = "font-weight: normal" })
                     </div>
                 }
+                <span asp-validation-for="IngredientsChoices" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CartItem.Quantity" class="control-label"></label>

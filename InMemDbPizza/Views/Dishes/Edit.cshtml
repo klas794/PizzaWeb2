@@ -13,6 +13,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Dish.DishId" />
+            <input type="hidden" asp-for="Dish.CategoryId" />
             <div class="form-group">
                 <label asp-for="Dish.Name" class="control-label"></label>
                 <input asp-for="Dish.Name" class="form-control" />
@@ -29,10 +30,12 @@
                 {
                     <div class="form-check">
                         @Html.HiddenFor(x => x.IngredientsChoices[i].Ingredient.IngredientId)
+                        @Html.HiddenFor(x => x.IngredientsChoices[i].Ingredient.Name)
                         @Html.CheckBoxFor(x => x.IngredientsChoices[i].Checked, new { @class = "form-check-input" })
                         @Html.LabelFor(x => x.IngredientsChoices[i].Checked, Model.IngredientsChoices[i].Ingredient.Name, new { @class = "form-check-label" })
                     </div>
                 }
+                <span asp-validation-for="IngredientsChoices" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <select asp-for="Dish.CategoryId" asp-items="Model.Categories">

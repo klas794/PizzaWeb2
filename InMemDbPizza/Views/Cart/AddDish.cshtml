@@ -28,6 +28,8 @@
 
                                 <div class="form-check" >
                                     @Html.HiddenFor(x => x.IngredientsChoices[i].Ingredient.IngredientId)
+                                    @Html.HiddenFor(x => x.IngredientsChoices[i].Ingredient.Name)
+                                    @Html.HiddenFor(x => x.IngredientsChoices[i].Ingredient.Price)
                                     @Html.CheckBoxFor(x => x.IngredientsChoices[i].Checked, new { @class = "form-check-input" })
                                     @Html.LabelFor(x => x.IngredientsChoices[i].Checked,
                                         Model.IngredientsChoices[i].Ingredient.Name + extraCostText,

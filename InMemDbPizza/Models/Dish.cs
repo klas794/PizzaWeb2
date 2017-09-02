@@ -10,8 +10,15 @@ namespace InMemDbPizza.Models
     public class Dish
     {
         public int DishId { get; set; }
+
+        [Required]
         public string Name { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:C0}")]
+        [Required]
         public int Price { get; set; }
+
         public Category Category { get; set; }
         public int CategoryId { get; set; }
 

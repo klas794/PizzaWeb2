@@ -129,10 +129,28 @@ namespace ProjectPizzaWeb.Controllers
 
                 return RedirectToAction(nameof(Index), "Home");
             }
+
+            model.CartItem.Dish = _context.Dishes.Find(model.CartItem.DishId);
+
+            var dishIngredients = _context.DishIngredients
+                .Include(x => x.Ingredient)
+                .Where(x => x.DishId == model.CartItem.DishId)
+                .ToList();
+
+            model.IngredientsChoices =
+                _context.Ingredient
+                .Select(x => new IngredientChoice
+                {
+                    Ingredient = x,
+                    Checked = dishIngredients.Any(y => y.Ingredient == x)
+                })
+                .OrderBy(x => x.Ingredient.Name)
+                .ToList();
+
             return View(model);
         }
 
-        public IActionResult EditCartItem(int cartItemId)
+        private AddCartItemViewModel CreateAddCartItemViewModel(int cartItemId)
         {
             var model = new AddCartItemViewModel();
 
@@ -155,8 +173,15 @@ namespace ProjectPizzaWeb.Controllers
                 })
                 .OrderBy(x => x.Ingredient.Name)
                 .ToList();
-            
+
             model.CartItem = cartItem;
+
+            return model;
+        }
+
+        public IActionResult EditCartItem(int cartItemId)
+        {
+            var model = CreateAddCartItemViewModel(cartItemId);
 
             return View(model);
         }
@@ -165,6 +190,13 @@ namespace ProjectPizzaWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCartItem(AddCartItemViewModel model)
         {
+            var ingredientsSelected = model.IngredientsChoices.Count(x => x.Checked);
+
+            if(ingredientsSelected == 0)
+            {
+                ModelState.AddModelError("IngredientsChoices" , "Select at least one ingredient");
+            }
+
             if (ModelState.IsValid)
             {
                 var cartItem = _context.CartItems
@@ -187,7 +219,7 @@ namespace ProjectPizzaWeb.Controllers
                     {
                         CartItemId = cartItem.CartItemId,
                         CartItem = cartItem,
-                        Ingredient = _context.Ingredient.SingleOrDefault(y => y.IngredientId == x.Ingredient.IngredientId),
+                        Ingredient = _context.Ingredient.Find(x.Ingredient.IngredientId),
                         IngredientId = x.Ingredient.IngredientId
                     })
                     .ToList();
@@ -198,6 +230,12 @@ namespace ProjectPizzaWeb.Controllers
 
                 return RedirectToAction(nameof(Index), "Home");
             }
+
+            foreach (var item in model.IngredientsChoices)
+            {
+                item.Ingredient = _context.Ingredient.Find(item.Ingredient.IngredientId);
+            }
+
             return View(model);
         }
 

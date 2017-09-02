@@ -76,6 +76,13 @@ namespace InMemDbPizza.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateDishViewModel model)
         {
+            var ingredientsSelected = model.IngredientsChoices.Count(x => x.Checked);
+
+            if (ingredientsSelected == 0)
+            {
+                ModelState.AddModelError("IngredientsChoices", "Select at least one ingredient");
+            }
+
             if (ModelState.IsValid)
             {
                 var dish = new Dish
@@ -110,6 +117,17 @@ namespace InMemDbPizza.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            model.Categories = _context.Category
+                .Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() })
+                .OrderBy(x => x.Text)
+                .ToList();
+
+            model.IngredientsChoices = _context.Ingredient
+                .Select(x => new IngredientChoice { Ingredient = x })
+                .OrderBy(x => x.Ingredient.Name)
+                .ToList();
+
             return View(model);
         }
 
@@ -162,6 +180,13 @@ namespace InMemDbPizza.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, CreateDishViewModel dishModel)
         {
+            var ingredientsSelected = dishModel.IngredientsChoices.Count(x => x.Checked);
+
+            if (ingredientsSelected == 0)
+            {
+                ModelState.AddModelError("IngredientsChoices", "Select at least one ingredient");
+            }
+
             if (id != dishModel.Dish.DishId)
             {
                 return NotFound();
@@ -219,6 +244,17 @@ namespace InMemDbPizza.Controllers
                         throw;
                     }
                 }
+
+                dishModel.Categories = await _context.Category.Select(
+                    x => new SelectListItem
+                    {
+                        Text = x.Name,
+                        Value = x.CategoryId.ToString(),
+                        Selected = dishModel.Dish.CategoryId == x.CategoryId
+                    })
+                    .OrderBy(x => x.Text)
+                    .ToListAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(dishModel);
