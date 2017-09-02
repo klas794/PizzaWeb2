@@ -132,25 +132,25 @@ namespace InMemDbPizza.Controllers
 
             model.Dish = dish;
 
-            var dishIngredients = _context.DishIngredients
+            var dishIngredients = await _context.DishIngredients
                 .Where(x => x.DishId == dish.DishId)
-                .ToList();
+                .ToListAsync();
 
-            model.IngredientsChoices = _context.Ingredient
+            model.IngredientsChoices = await _context.Ingredient
                 .Select(x => new IngredientChoice {
                     Ingredient = x,
                     Checked = dishIngredients.Any(y => y.Ingredient == x)
                 })
                 .OrderBy(x => x.Ingredient.Name)
-                .ToList();
+                .ToListAsync();
 
-            model.Categories = _context.Category.Select(
+            model.Categories = await _context.Category.Select(
                 x => new SelectListItem {
                     Text = x.Name, Value = x.CategoryId.ToString(),
                     Selected = dish.CategoryId ==  x.CategoryId
                 })
                 .OrderBy(x => x.Text)
-                .ToList();
+                .ToListAsync();
 
             return View(model);
         }
