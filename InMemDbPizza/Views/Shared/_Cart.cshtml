@@ -66,10 +66,14 @@
                     </div>
                 </p>
             }
+
             <hr />
+            @if(Model.Cart.CartItems.Count > 0) { 
             <a asp-action="ReviewOrder" asp-controller="Cart" class="btn btn-default btn-md">
                 <span class="glyphicon glyphicon-shopping-cart"></span> Buy now
             </a>
+            }
+
         </li>
     </ul>
 
