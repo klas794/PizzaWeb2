@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ProjectPizzaWeb.Models.Order>
+
+@{
+    ViewData["Title"] = "Manage orders";
+}
+
+<h2>Manage orders</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Payment)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                <p>
+                    <i>@item.Address.Name</i><br />
+                    @item.Address.PostalAddress,
+                    @item.Address.PostalCode
+                    @item.Address.City<br />
+                    Tel: @item.Address.Phone
+                </p>
+                <a href="https://www.google.com/maps/search/?api=1&query=@item.Address.PostalAddress+@item.Address.PostalCode+@item.Address.City"
+                @Html.ActionLink("View address", "View", "Address", null, null, null,
+                    new { cartId = item.Address.AddressId }, null)
+            </td>
+            <td>
+                @Html.ActionLink("View cart", "View", "Cart", null, null, null, 
+                    new { cartId = item.CartId }, null)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Payment.PaymentType.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

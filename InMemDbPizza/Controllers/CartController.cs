@@ -330,5 +330,14 @@ namespace ProjectPizzaWeb.Controllers
             return View(order);
         }
 
+        public IActionResult View(int cartId)
+        {
+            var cart = _context.Cart
+                .Include(x => x.CartItems)
+                .ThenInclude(x => x.Dish)
+                .SingleOrDefault(x => x.CartId == cartId);
+
+            return View(cart);
+        }
     }
 }

@@ -1,0 +1,39 @@
+﻿@model ProjectPizzaWeb.Models.Cart
+@inject ProjectPizzaWeb.Services.CartItemService cartItemService
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Cart # @Model.CartId</h4>
+    <hr />
+</div>
+
+<ul class="list-group">
+    <li class="list-group-item list-group-item-warning list-group-item-heading">
+        Items in cart
+    </li>
+    @foreach (var item in Model.CartItems)
+    {
+        <li class="list-group-item">
+            <p>
+                <strong>@item.Quantity x</strong> @item.Dish.Name
+            </p>
+            <p>
+                @foreach (var ingredient in cartItemService.GetIngredients(item.CartItemId))
+                {
+                    <div class="container-fluid">
+                        @ingredient.Ingredient.Name
+                    </div>
+                }
+            </p>
+        </li>
+    }
+</ul>
+
+<div>
+<a href="#" onclick="window.history.back()">Go back</a>
+</div>
