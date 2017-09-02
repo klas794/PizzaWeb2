@@ -9,3 +9,19 @@ nav.navbar {
     height: 60px;
     padding-top: 6px
 }
+
+@media screen and (max-width: 767px) {
+    nav.navbar {
+        background: white;
+        border: none;
+        margin: 10px 0 0;
+        min-height: 60px;
+        height: auto;
+
+        padding-top: 6px
+    }    
+}
+
+nav .icon-bar {
+    background-color: grey !important
+}
