@@ -25,6 +25,7 @@ namespace InMemDbPizza.Controllers
         {
             return View(
                 await _context.Dishes
+                .Include(x => x.Category)
                 .OrderBy(x => x.Name)
                 .ToListAsync());
         }
