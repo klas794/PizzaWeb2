@@ -17,6 +17,9 @@ namespace InMemDbPizza.Models
 
         public Guid UserId { get; set; }
 
+        [Required]
+        [Display(Name = "Full name")]
+        public string Name { get; set; }
 
         [Required]
         public string PostalAddress { get; set; }

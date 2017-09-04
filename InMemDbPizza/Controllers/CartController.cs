@@ -261,6 +261,7 @@ namespace ProjectPizzaWeb.Controllers
             if(model.Cart.ApplicationUser != null)
             {
                 model.Email = model.Cart.ApplicationUser.Email;
+                model.Name = model.Cart.ApplicationUser.Name;
                 model.PostalAddress = model.Cart.ApplicationUser.PostalAddress;
                 model.PostalCode = model.Cart.ApplicationUser.PostalCode;
                 model.City = model.Cart.ApplicationUser.City;

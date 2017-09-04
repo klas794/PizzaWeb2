@@ -21,6 +21,10 @@ namespace InMemDbPizza.Models.ManageViewModels
         public string PhoneNumber { get; set; }
 
         [Required]
+        [Display(Name = "Full name")]
+        public string Name { get; set; }
+
+        [Required]
         [Display(Name = "Postal address")]
         public string PostalAddress { get; set; }
 

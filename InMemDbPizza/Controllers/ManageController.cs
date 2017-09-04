@@ -60,6 +60,7 @@ namespace InMemDbPizza.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,
+                Name = user.Name,
                 PostalAddress = user.PostalAddress,
                 PostalCode = user.PostalCode,
                 City = user.City,
@@ -104,6 +105,7 @@ namespace InMemDbPizza.Controllers
                 }
             }
 
+            user.Name = model.Name;
             user.PostalAddress = model.PostalAddress;
             user.PostalCode = model.PostalCode;
             user.City = model.City;
