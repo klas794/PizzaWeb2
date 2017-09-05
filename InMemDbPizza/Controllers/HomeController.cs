@@ -11,6 +11,7 @@ using ProjectPizzaWeb.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ProjectPizzaWeb.Services;
+using Microsoft.Extensions.Logging;
 
 namespace InMemDbPizza.Controllers
 {
@@ -20,22 +21,26 @@ namespace InMemDbPizza.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly CartService _cartService;
         private readonly CartItemService _cartItemService;
+        private readonly ILogger<HomeController> _logger;
 
         public HomeController(
             ApplicationDbContext context, 
             UserManager<ApplicationUser> userManager,
             CartService cartService,
-            CartItemService cartItemService
+            CartItemService cartItemService,
+            ILogger<HomeController> logger
             )
         {
             _context = context;
             _userManager = userManager;
             _cartService = cartService;
             _cartItemService = cartItemService;
+            _logger = logger;
         }
         
         public async Task<IActionResult> Index(int? categoryId)
         {
+            
             var model = new MenuViewModel();
 
             model.Cart = await _cartService.GetCart(HttpContext.Session, User); // GetCart();
