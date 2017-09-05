@@ -54,18 +54,8 @@
                 <ul class="container-fluid" style="margin-top: 20px">
                     <li class="list-group-item">
                         <div class="body-content">
-
-                            <div class="">
-                                <div class="row">
-                                    @RenderBody()
-                                    <div class="col-sm-3">
-                                        @if (this.ViewContext.RouteData.Values["controller"].ToString() == "Home")
-                                        {
-                                            Html.RenderPartial("_Cart");
-                                        }
-                                    </div>
-                                </div>
-                            </div>
+                            
+                            @RenderBody()
 
                             <hr />
                             <footer>
