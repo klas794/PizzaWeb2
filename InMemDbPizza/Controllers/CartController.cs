@@ -10,6 +10,7 @@ using InMemDbPizza.Models;
 using InMemDbPizza.Controllers;
 using Microsoft.EntityFrameworkCore;
 using ProjectPizzaWeb.Services;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,11 +20,13 @@ namespace ProjectPizzaWeb.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly CartService _cartService;
+        private readonly ILogger<CartController> _logger;
 
-        public CartController(ApplicationDbContext context, CartService cartService)
+        public CartController(ApplicationDbContext context, CartService cartService, ILogger<CartController> logger)
         {
             _context = context;
             _cartService = cartService;
+            _logger = logger;
         }
 
         // GET: /<controller>/
@@ -312,6 +315,8 @@ namespace ProjectPizzaWeb.Controllers
             await _context.SaveChangesAsync();
 
             await _cartService.CreateCart(HttpContext.Session, HttpContext.User);
+
+            _logger.LogInformation("---> Order placed: {0} ordered {1} dishes", order.Address.Name, order.Cart.CartItems.Count);
 
             return RedirectToAction("OrderConfirmation", order);
         }
