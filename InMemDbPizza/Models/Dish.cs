@@ -16,6 +16,7 @@ namespace InMemDbPizza.Models
 
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:C0}")]
+        [Range(1,int.MaxValue)]
         [Required]
         public int Price { get; set; }
 
