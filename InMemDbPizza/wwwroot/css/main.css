@@ -25,3 +25,9 @@ nav.navbar {
 nav .icon-bar {
     background-color: grey !important
 }
+
+.pizza-slice {
+    height: 30px;
+    margin-top: 14px;
+    margin-left: 5px;
+}

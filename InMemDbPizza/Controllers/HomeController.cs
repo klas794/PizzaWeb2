@@ -50,6 +50,8 @@ namespace InMemDbPizza.Controllers
             if (categoryId != null)
             {
                 model.Dishes = _context.Dishes
+                    .Include(x => x.DishIngredients)
+                    .ThenInclude(x => x.Ingredient)
                     .Where(x => x.CategoryId == categoryId)
                     .OrderBy(x => x.Name)
                     .ToList();
@@ -58,6 +60,8 @@ namespace InMemDbPizza.Controllers
             else
             {
                 model.Dishes = _context.Dishes
+                    .Include(x => x.DishIngredients)
+                    .ThenInclude(x => x.Ingredient)
                     .OrderBy(x => x.Name)
                     .ToList();
             }
