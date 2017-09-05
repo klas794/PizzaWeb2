@@ -61,6 +61,7 @@ namespace ProjectPizzaWeb.Services
 
             var cart = new Cart()
             {
+                ApplicationUser = appUser,
                 ApplicationUserId = userId,
                 CartItems = new List<CartItem>()
             };
