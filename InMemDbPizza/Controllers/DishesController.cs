@@ -197,6 +197,8 @@ namespace InMemDbPizza.Controllers
             {
                 try
                 {
+                    dishModel.Dish.Category = _context.Category.Find(dishModel.Dish.CategoryId);
+
                     dishModel.Dish.DishIngredients = new List<DishIngredient>();
                     foreach (var choice in dishModel.IngredientsChoices)
                     {

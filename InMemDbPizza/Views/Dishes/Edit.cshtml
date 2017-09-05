@@ -13,7 +13,6 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Dish.DishId" />
-            <input type="hidden" asp-for="Dish.CategoryId" />
             <div class="form-group">
                 <label asp-for="Dish.Name" class="control-label"></label>
                 <input asp-for="Dish.Name" class="form-control" />
@@ -27,7 +26,7 @@
             <div class="form-group">
                 <label asp-for="Dish.Category" class="control-label"></label>
                 <p>
-                    <select asp-for="Dish.CategoryId" asp-items="Model.Categories"></select>
+                    <select asp-for="Dish.CategoryId" asp-items="Model.Categories" class="form-control"></select>
                     <span asp-validation-for="Dish.CategoryId" class="text-danger"></span>
                 </p>
             </div>
