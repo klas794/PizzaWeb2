@@ -31,3 +31,10 @@ nav .icon-bar {
     margin-top: 14px;
     margin-left: 5px;
 }
+
+.main-logo {
+    height: 78px;
+    float: left;
+    margin-right: 15px;
+    margin-top: -8px;
+}
