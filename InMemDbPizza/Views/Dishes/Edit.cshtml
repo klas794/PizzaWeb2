@@ -25,6 +25,13 @@
                 <span asp-validation-for="Dish.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Dish.Category" class="control-label"></label>
+                <p>
+                    <select asp-for="Dish.CategoryId" asp-items="Model.Categories"></select>
+                    <span asp-validation-for="Dish.CategoryId" class="text-danger"></span>
+                </p>
+            </div>
+            <div class="form-group">
                 <label asp-for="IngredientsChoices" class="control-label"></label>
                 @for (int i = 0; i < Model.IngredientsChoices.Count; i++)
                 {
@@ -36,10 +43,6 @@
                     </div>
                 }
                 <span asp-validation-for="IngredientsChoices" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <select asp-for="Dish.CategoryId" asp-items="Model.Categories">
-                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
