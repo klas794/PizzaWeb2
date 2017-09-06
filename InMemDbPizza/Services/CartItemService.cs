@@ -46,6 +46,13 @@ namespace ProjectPizzaWeb.Services
             return total;
         }
 
+        public int CalculateTotals(Cart cart)
+        {
+            return cart.CartItems.Sum(x => 
+                (x.Dish.Price + SumExtraIngredientsValue(x)) 
+                * x.Quantity);
+        }
+
         public int SumExtraIngredientsForOne(CartItem cartItem)
         {
             var originalDishIngredientsCount =

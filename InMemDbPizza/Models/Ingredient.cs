@@ -20,6 +20,6 @@ namespace InMemDbPizza.Models
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:C0}")]
         [Required]
-        public int Price { get; internal set; } = 10;
+        public int Price { get; set; } = 10;
     }
 }
