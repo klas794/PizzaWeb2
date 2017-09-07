@@ -26,15 +26,11 @@ namespace InMemDbPizza.Controllers
         public HomeController(
             ApplicationDbContext context, 
             UserManager<ApplicationUser> userManager,
-            CartService cartService,
-            CartItemService cartItemService,
             ILogger<HomeController> logger
             )
         {
             _context = context;
             _userManager = userManager;
-            _cartService = cartService;
-            _cartItemService = cartItemService;
             _logger = logger;
         }
         
@@ -43,10 +39,6 @@ namespace InMemDbPizza.Controllers
             
             var model = new MenuViewModel();
 
-            model.Cart = await _cartService.GetCart(HttpContext.Session, User); // GetCart();
-
-            model.ExtraIngredientsCount = _cartItemService.SumExtraIngredients(model.Cart.CartItems);
-            
             if (categoryId != null)
             {
                 model.Dishes = _context.Dishes
