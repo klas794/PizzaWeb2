@@ -1,4 +1,6 @@
 ﻿using InMemDbPizza.Data;
+using InMemDbPizza.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ProjectPizzaWeb.Services;
@@ -23,6 +25,11 @@ namespace XUnitTestProject1
             services.AddDbContext<ApplicationDbContext>(b =>
                 b.UseInMemoryDatabase("Pizzadatabas")
                 .UseInternalServiceProvider(efServiceProvider));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
 
             services.AddTransient<IngredientService>();
             services.AddTransient<CartItemService>();

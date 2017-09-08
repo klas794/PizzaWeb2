@@ -19,8 +19,6 @@ namespace InMemDbPizza.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly CartService _cartService;
-        private readonly CartItemService _cartItemService;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(
@@ -34,9 +32,8 @@ namespace InMemDbPizza.Controllers
             _logger = logger;
         }
         
-        public async Task<IActionResult> Index(int? categoryId)
+        public IActionResult Index(int? categoryId)
         {
-            
             var model = new MenuViewModel();
 
             if (categoryId != null)
