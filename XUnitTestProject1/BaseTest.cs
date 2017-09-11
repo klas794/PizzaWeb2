@@ -7,6 +7,7 @@ using ProjectPizzaWeb.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace XUnitTestProject1
 {
@@ -33,13 +34,20 @@ namespace XUnitTestProject1
 
             services.AddTransient<IngredientService>();
             services.AddTransient<CartItemService>();
+            services.AddTransient<CartService>();
 
             _serviceProvider = services.BuildServiceProvider();
 
             InitializeDatabase();
+
         }
 
         public virtual void InitializeDatabase()
+        {
+
+        }
+
+        public virtual async Task InitializeDatabaseAsync()
         {
 
         }
