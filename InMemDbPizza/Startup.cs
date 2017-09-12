@@ -12,23 +12,35 @@ using InMemDbPizza.Data;
 using InMemDbPizza.Models;
 using InMemDbPizza.Services;
 using ProjectPizzaWeb.Services;
+using Microsoft.Extensions.Logging;
 
 namespace InMemDbPizza
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
+            _environment = environment;
         }
 
         public IConfiguration Configuration { get; }
 
+        private readonly IHostingEnvironment _environment;
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseInMemoryDatabase("DefaultConnection"));
+            if(_environment.IsProduction())
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseInMemoryDatabase("DefaultConnection"));
+            }
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -48,8 +60,11 @@ namespace InMemDbPizza
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddConsole();
+            loggerFactory.AddDebug();
+
             app.UseSession();
 
             if (env.IsDevelopment())
@@ -74,8 +89,12 @@ namespace InMemDbPizza
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            DbInitializer.Initialize(userManager, context, roleManager);
+            if(env.IsProduction())
+            {
+                context.Database.Migrate();
+            }
 
+            DbInitializer.Initialize(userManager, context, roleManager);
         }
     }
 }

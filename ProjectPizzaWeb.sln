@@ -1,16 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectPizzaWeb", "InMemDbPizza\ProjectPizzaWeb.csproj", "{FCA4FD81-DF76-4ECC-8FA9-6BA8D9E6B54A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestProject1", "XUnitTestProject1\XUnitTestProject1.csproj", "{821BC0D8-DA1C-4EC3-AF04-97426ADFF61C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestProject1", "XUnitTestProject1\XUnitTestProject1.csproj", "{821BC0D8-DA1C-4EC3-AF04-97426ADFF61C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		LocalIIS|Any CPU = LocalIIS|Any CPU
+		Production (Azure)|Any CPU = Production (Azure)|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
@@ -18,12 +19,16 @@ Global
 		{FCA4FD81-DF76-4ECC-8FA9-6BA8D9E6B54A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCA4FD81-DF76-4ECC-8FA9-6BA8D9E6B54A}.LocalIIS|Any CPU.ActiveCfg = LocalIIS|Any CPU
 		{FCA4FD81-DF76-4ECC-8FA9-6BA8D9E6B54A}.LocalIIS|Any CPU.Build.0 = LocalIIS|Any CPU
+		{FCA4FD81-DF76-4ECC-8FA9-6BA8D9E6B54A}.Production (Azure)|Any CPU.ActiveCfg = Production (Azure)|Any CPU
+		{FCA4FD81-DF76-4ECC-8FA9-6BA8D9E6B54A}.Production (Azure)|Any CPU.Build.0 = Production (Azure)|Any CPU
 		{FCA4FD81-DF76-4ECC-8FA9-6BA8D9E6B54A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCA4FD81-DF76-4ECC-8FA9-6BA8D9E6B54A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{821BC0D8-DA1C-4EC3-AF04-97426ADFF61C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{821BC0D8-DA1C-4EC3-AF04-97426ADFF61C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{821BC0D8-DA1C-4EC3-AF04-97426ADFF61C}.LocalIIS|Any CPU.ActiveCfg = Debug|Any CPU
 		{821BC0D8-DA1C-4EC3-AF04-97426ADFF61C}.LocalIIS|Any CPU.Build.0 = Debug|Any CPU
+		{821BC0D8-DA1C-4EC3-AF04-97426ADFF61C}.Production (Azure)|Any CPU.ActiveCfg = Release|Any CPU
+		{821BC0D8-DA1C-4EC3-AF04-97426ADFF61C}.Production (Azure)|Any CPU.Build.0 = Release|Any CPU
 		{821BC0D8-DA1C-4EC3-AF04-97426ADFF61C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{821BC0D8-DA1C-4EC3-AF04-97426ADFF61C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

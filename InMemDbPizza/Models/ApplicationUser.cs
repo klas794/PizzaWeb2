@@ -10,24 +10,12 @@ namespace InMemDbPizza.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-        public  ApplicationUser()
-        {
-            UserId = Guid.NewGuid();
-        }
-
-        public Guid UserId { get; set; }
-
-        [Required]
-        [Display(Name = "Full name")]
         public string Name { get; set; }
 
-        [Required]
         public string PostalAddress { get; set; }
 
-        [Required]
         public string PostalCode { get; set; }
 
-        [Required]
         public string City { get; set; }
 
     }

@@ -3,8 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>aspnet-InMemDbPizza-CE9E3CF1-3B27-4CFE-BC9A-ABDDAD1B8A2B</UserSecretsId>
-    <Configurations>Debug;Release;LocalIIS</Configurations>
+    <Configurations>Debug;Release;LocalIIS;Production (Azure)</Configurations>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Shared\_Cart.cshtml" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Properties\PublishProfiles\LocalIIS.pubxml" />
@@ -17,6 +21,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" PrivateAssets="All" />
   </ItemGroup>
 
