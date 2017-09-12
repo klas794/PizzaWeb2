@@ -31,14 +31,13 @@ namespace ProjectPizzaWeb.Services
 
             foreach (var item in cartItems)
             {
-                var originalDishIngredientsCount =
+                var originalDishIngredients =
                     _context.DishIngredients
-                        .Where(d => d.DishId == item.DishId)
-                        .Count();
+                        .Where(d => d.DishId == item.DishId);
 
-                var modifiedDishIngredientsCount = this.GetIngredients(item.CartItemId).Count();
-
-                var extraIngredientsCount = modifiedDishIngredientsCount - originalDishIngredientsCount;
+                var extraIngredientsCount = this.GetIngredients(item.CartItemId)
+                    .Where(x => !originalDishIngredients.Any(y => y.IngredientId == x.IngredientId))
+                    .Count();
 
                 total += extraIngredientsCount > 0 ? extraIngredientsCount * item.Quantity : 0;
             }
@@ -55,14 +54,13 @@ namespace ProjectPizzaWeb.Services
 
         public int SumExtraIngredientsForOne(CartItem cartItem)
         {
-            var originalDishIngredientsCount =
-                _context.DishIngredients
-                    .Where(x => x.DishId == cartItem.DishId)
-                    .Count();
+            var originalDishIngredients =
+                    _context.DishIngredients
+                        .Where(d => d.DishId == cartItem.DishId);
 
-            var modifiedDishIngredientsCount = this.GetIngredients(cartItem.CartItemId).Count();
-
-            var extraIngredientsCount = modifiedDishIngredientsCount - originalDishIngredientsCount;
+            var extraIngredientsCount = this.GetIngredients(cartItem.CartItemId)
+                .Where(x => !originalDishIngredients.Any(y => y.IngredientId == x.IngredientId))
+                .Count();
 
             return extraIngredientsCount > 0 ? extraIngredientsCount : 0;
         }
