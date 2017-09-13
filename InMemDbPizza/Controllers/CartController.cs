@@ -259,6 +259,11 @@ namespace ProjectPizzaWeb.Controllers
             
             model.Cart = await _cartService.GetCart(HttpContext.Session, HttpContext.User);
 
+            if(model.Cart.CartItems.Count() == 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             model.PaymentChoices = await _context.PaymentChoices.ToListAsync();
 
             if(model.Cart.ApplicationUser != null)

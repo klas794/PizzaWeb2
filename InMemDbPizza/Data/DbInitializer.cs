@@ -10,7 +10,7 @@ namespace InMemDbPizza.Data
 {
     public class DbInitializer
     {
-        public static void Initialize(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
+        public static async Task Initialize(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
         {
             var aUser = new ApplicationUser();
             aUser.UserName = "student@test.com";
@@ -24,9 +24,9 @@ namespace InMemDbPizza.Data
             adminUser.UserName = "admin@test.com";
             adminUser.Email = "admin@test.com";
 
-            var adminUserResult = userManager.CreateAsync(adminUser, "Pa$$w0rd");
+            var adminUserResult = await userManager.CreateAsync(adminUser, "Pa$$w0rd");
 
-            var roleAddedResult = userManager.AddToRoleAsync(adminUser, "Admin");
+            var roleAddedResult = await userManager.AddToRoleAsync(adminUser, "Admin");
 
             if (context.Dishes.ToList().Count == 0)
             {
