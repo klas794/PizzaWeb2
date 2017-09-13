@@ -70,6 +70,8 @@ namespace ProjectPizzaWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                order.OrderTime = DateTime.Now;
+
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

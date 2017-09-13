@@ -12,12 +12,15 @@ namespace ProjectPizzaWeb.Models
         public int OrderId { get; set; }
 
         public Payment Payment { get; set; }
+        [Display(Name = "Payment #")]
         public int PaymentId { get; set; }
 
         public Cart Cart { get; set; }
+        [Display(Name = "Cart #")]
         public int CartId { get; set; }
 
         public Address Address { get; set; }
+        [Display(Name = "Address #")]
         public int AddressId { get; set; }
 
         [Display(Name = "Time of order")]
