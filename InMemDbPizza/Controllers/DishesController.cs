@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using InMemDbPizza.Data;
 using InMemDbPizza.Models;
 using ProjectPizzaWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InMemDbPizza.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class DishesController : Controller
     {
         private readonly ApplicationDbContext _context;

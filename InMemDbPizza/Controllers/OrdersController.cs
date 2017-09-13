@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using InMemDbPizza.Data;
 using ProjectPizzaWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectPizzaWeb.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
