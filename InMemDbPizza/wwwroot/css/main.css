@@ -22,6 +22,18 @@ nav.navbar {
     }    
 }
 
+@media screen and (max-width: 838px) {
+    .nav li a {
+        padding: 15px 9px !important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .nav li a {
+        padding: 15px !important
+    }
+}
+
 nav .icon-bar {
     background-color: grey !important
 }
@@ -37,4 +49,17 @@ nav .icon-bar {
     float: left;
     margin-right: 15px;
     margin-top: -8px;
+}
+
+.navbar-collapse {
+    border-top: 0;
+}
+
+.navbar-inverse .navbar-toggle {
+    border-color: rgb(221, 221, 221);
+}
+
+.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+    background-color: #fcf8e3;
+    border-color: rgb(221, 221, 221);
 }

@@ -9,10 +9,22 @@
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">
+                    
+                    <span class="hidden-lg glyphicon glyphicon-user" aria-hidden="true"></span>
+                    &nbsp;    
+                    <span class="hidden-sm hidden-md">
+                        Hello @UserManager.GetUserName(User)!
+                    </span>
+                </a>
             </li>
             <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
+                <button type="submit" class="hidden-xs hidden-md hidden-lg btn btn-link navbar-btn navbar-link">
+                    <span class="glyphicon glyphicon-log-out" aria-hidden="true">
+                    </span>
+                </button>
+            
+                <button type="submit" class="hidden-sm btn btn-link navbar-btn navbar-link">Log out</button>
             </li>
         </ul>
     </form>
@@ -20,7 +32,21 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
+        <li>
+            <a asp-area="" asp-controller="Account" asp-action="Register" title="Register">
+
+                <span class="hidden-lg glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                &nbsp;
+                <span class="hidden-sm hidden-md">Register</span>
+            </a>
+        </li>
+        <li>
+            <a asp-area="" asp-controller="Account" asp-action="Login" title="Log in">
+
+                <span class="hidden-xs hidden-md hidden-lg glyphicon glyphicon-log-in" aria-hidden="true"></span>
+
+                <span class="hidden-sm">Log in</span>
+            </a>
+        </li>
     </ul>
 }
