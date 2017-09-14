@@ -22,9 +22,9 @@ nav.navbar {
     }    
 }
 
-@media screen and (max-width: 838px) {
+@media screen and (max-width: 845px) {
     .nav li a {
-        padding: 15px 9px !important;
+        padding: 15px 8px !important;
     }
 }
 
