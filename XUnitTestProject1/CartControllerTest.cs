@@ -23,9 +23,13 @@ namespace XUnitTestProject1
     public class CartControllerTest : BaseTest
     {
         private Mock<HttpContext> _httpContext;
-        private Mock<ISession> _mockSession;
         private Mock<ClaimsPrincipal> _mockUser;
         private CartService _cartService;
+        private ISession _session;
+
+        public CartControllerTest()
+        {
+        }
 
         public override async Task InitializeDatabaseAsync()
         {
@@ -41,7 +45,6 @@ namespace XUnitTestProject1
             
             await context.AddRangeAsync(category1, category2);
             await context.AddRangeAsync(dish, dish2, dish3);
-
             await context.SaveChangesAsync();
 
             var paymentProvider = new PaymentChoice { Name = "Silver club" };
@@ -49,23 +52,22 @@ namespace XUnitTestProject1
             await context.AddAsync(paymentProvider);
             await context.SaveChangesAsync();
 
-            var cart = DbInitializer.SeedCartWithDish(dish, context, null, quantity: 2);
+            _cartService = _serviceProvider.GetRequiredService<CartService>();
+
+            _mockUser = new Mock<ClaimsPrincipal>();
+            _session = new TestSession();
+
+            var cart = await _cartService.CreateCart(_session, _mockUser.Object);
+
+            cart = DbInitializer.SeedCartWithDish(dish, context, null, quantity: 2, cartTarget: cart);
             cart = DbInitializer.SeedCartWithDish(dish2, context, null, quantity: 3, cartTarget: cart);
             cart = DbInitializer.SeedCartWithDish(dish3, context, null, quantity: 3, cartTarget: cart);
-            await context.AddAsync(cart);
+            context.Update(cart);
             await context.SaveChangesAsync();
 
             _httpContext = new Mock<HttpContext>();
-
-            _mockSession = new Mock<ISession>();
-            _mockUser = new Mock<ClaimsPrincipal>();
-
-            _mockSession.Object.SetInt32("cartid", cart.CartId);
-
-            _httpContext.Setup(s => s.Session).Returns(_mockSession.Object);
+            _httpContext.Setup(s => s.Session).Returns(_session);
             _httpContext.Setup(s => s.User).Returns(_mockUser.Object);
-
-            _cartService = _serviceProvider.GetRequiredService<CartService>();
 
             return;
         }
@@ -79,6 +81,7 @@ namespace XUnitTestProject1
 
             var dbContext = _serviceProvider.GetRequiredService<ApplicationDbContext>();
             var logger = _serviceProvider.GetRequiredService<ILogger<CartController>>();
+
 
             var actionDescriptor = new Mock<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>().Object;
             var modelState = new ModelStateDictionary();
@@ -104,17 +107,17 @@ namespace XUnitTestProject1
             };
 
             reviewOrderViewModel.Cart = 
-                await _cartService.GetCart(_mockSession.Object, _mockUser.Object);
+                await _cartService.GetCart(_session, _mockUser.Object);
 
             var preNumberOfOrders = dbContext.Orders.Count();
 
             // Action
             var result = await controller.PlaceOrder(reviewOrderViewModel);
-            
+
             // Assert
             //var viewResult = Assert.IsType<IActionResult>(result);
-            //Assert.Null(viewResult.ExecuteResultAsync().ViewName);
-           
+            //Assert.Null(viewResult.ViewName);
+
             //Assert.NotNull(viewResult.ViewData);
             //Assert.NotNull(viewResult.ViewData.Model);
 

@@ -66,8 +66,8 @@ namespace ProjectPizzaWeb.Services
                 CartItems = new List<CartItem>()
             };
 
-            _context.Add(cart);
-            _context.SaveChanges();
+            await _context.AddAsync(cart);
+            await _context.SaveChangesAsync();
 
             session.Set<int?>("cartid", cart.CartId);
 

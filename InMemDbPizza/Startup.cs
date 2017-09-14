@@ -13,6 +13,7 @@ using InMemDbPizza.Models;
 using InMemDbPizza.Services;
 using ProjectPizzaWeb.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace InMemDbPizza
 {
@@ -51,6 +52,12 @@ namespace InMemDbPizza
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<CartService>();
             services.AddTransient<CartItemService>();
+
+            //services.AddTransient(typeof(ISession), serviceProvider =>
+            //{
+            //    var httpContextAccessor = serviceProvider.GetService<IHttpContextAccessor>();
+            //    return httpContextAccessor.HttpContext.Session;
+            //});
 
             services.AddMvc();
 
