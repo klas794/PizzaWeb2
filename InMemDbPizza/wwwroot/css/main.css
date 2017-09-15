@@ -19,6 +19,13 @@ nav.navbar {
     margin-left: 15px
 }
 
+@media screen and (max-width: 1024px) {
+
+    .frontpage-main-row {
+        padding-left: 0;
+    }
+}
+
 @media screen and (max-width: 845px) {
     .nav li a {
         padding: 15px 8px !important;
@@ -38,7 +45,6 @@ nav.navbar {
         height: auto;
         padding-top: 6px
     }
-
 }
 
 @media screen and (max-width: 576px) {
@@ -54,6 +60,7 @@ nav.navbar {
     .add-now-to-cart-button {
         margin-left: 0;
     }
+
 }
 
 nav .icon-bar {
@@ -62,8 +69,8 @@ nav .icon-bar {
 
 .pizza-slice {
     height: 30px;
-    margin-top: 14px;
-    margin-left: 5px;
+    margin: 14px auto 0;
+    display: block;
 }
 
 .main-logo {
