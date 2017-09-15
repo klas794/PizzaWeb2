@@ -60,7 +60,7 @@
                         @item.OrderTime.ToShortTimeString()
                     </td>
                     <td>
-                        @if (ViewBag.ViewMode != "narrow")
+                        @if (Model.ViewMode != "narrow")
                         {
                             <p>
                                 <i>@item.Address.Name</i><br />
