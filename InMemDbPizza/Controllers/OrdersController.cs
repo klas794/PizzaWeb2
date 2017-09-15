@@ -22,8 +22,10 @@ namespace ProjectPizzaWeb.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string viewMode)
         {
+            ViewBag.ViewMode = viewMode;
+
             var applicationDbContext = _context.Orders
                 .Include(o => o.Address).Include(o => o.Cart).Include(o => o.Payment)
                 .ThenInclude(p => p.PaymentType)

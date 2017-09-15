@@ -27,7 +27,17 @@
             <th class="hidden-xs">
                 @Html.DisplayNameFor(model => model.Payment)
             </th>
-            <th></th>
+            <th>
+                <a asp-action="Index" asp-route-viewMode="narrow" 
+                   class="btn btn-default btn-sm pull-right" aria-label="Narrow list">
+                    <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                </a>
+
+                <a asp-action="Index" asp-route-viewMode="expanded" 
+                   class="btn btn-default btn-sm pull-right" aria-label="Expanded list" style="margin-right: 5px">
+                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                </a>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -38,13 +48,16 @@
                 @item.OrderTime.ToShortTimeString()
             </td>
             <td>
-                <p>
-                    <i>@item.Address.Name</i><br />
-                    @item.Address.PostalAddress,
-                    @item.Address.PostalCode
-                    @item.Address.City<br />
-                    Tel: @item.Address.Phone
-                </p>
+                @if(ViewBag.ViewMode != "narrow")
+                {
+                    <p>
+                        <i>@item.Address.Name</i><br />
+                        @item.Address.PostalAddress,
+                        @item.Address.PostalCode
+                        @item.Address.City<br />
+                        Tel: @item.Address.Phone
+                    </p>
+                }
 
                 <p class="visible-xs">
                     <i>Payment:</i> @item.Payment.PaymentType.Name
