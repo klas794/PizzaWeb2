@@ -287,7 +287,7 @@ namespace ProjectPizzaWeb.Controllers
         {
             var payment = new Payment
             {
-                CardNo = model.CardNo,
+                CardNo = string.Format("XXXX-XXXX-XXXX-{0}", model.CardNo.Substring(12)),
                 CardControlNumber = model.CCV,
                 PaymentType = _context.PaymentChoices.Find( model.PaymentChoice.PaymentChoiceId )
             };

@@ -1,6 +1,6 @@
 ﻿@model ProjectPizzaWeb.Models.CartViewModel
 @inject ProjectPizzaWeb.Services.CartItemService cartItemService
-
+    
 <p>
 
     <ul class="list-group">
@@ -16,14 +16,12 @@
             }
             else
             {
-                int checkoutPrice = 0;
                 int extrasTotal = 0;
 
                 @foreach (var item in Model.Cart.CartItems)
                 {
                     var extraValue = cartItemService.SumExtraIngredientsValue(item);
                     extrasTotal += extraValue * item.Quantity;
-                    checkoutPrice += (extraValue + item.Dish.Price) * item.Quantity;
 
                     <p>
                         <div class="row">
@@ -61,7 +59,8 @@
                     <div class="row">
                         <div class="col-sm-12">
                             Total:
-                            <span class="pull-right">@checkoutPrice kr</span>
+                            <span class="pull-right">@cartItemService.CalculateTotals(Model.Cart) kr</span>
+                            
                         </div>
                     </div>
                 </p>
