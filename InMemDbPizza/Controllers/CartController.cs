@@ -21,12 +21,14 @@ namespace ProjectPizzaWeb.Controllers
         private readonly ApplicationDbContext _context;
         private readonly CartService _cartService;
         private readonly ILogger<CartController> _logger;
+        private readonly LocalEmailSenderService _emailService;
 
-        public CartController(ApplicationDbContext context, CartService cartService, ILogger<CartController> logger)
+        public CartController(ApplicationDbContext context, CartService cartService, ILogger<CartController> logger, LocalEmailSenderService emailService)
         {
             _context = context;
             _cartService = cartService;
             _logger = logger;
+            _emailService = emailService;
         }
 
         // GET: /<controller>/
@@ -338,6 +340,8 @@ namespace ProjectPizzaWeb.Controllers
                 .SingleOrDefault(x => x.PaymentId == order.PaymentId);
 
             order.Address = _context.Addresses.Find(order.AddressId);
+
+            _emailService.SendConfirmationEmailAsync(order);
 
             return View(order);
         }

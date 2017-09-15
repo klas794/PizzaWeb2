@@ -52,12 +52,7 @@ namespace InMemDbPizza
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<CartService>();
             services.AddTransient<CartItemService>();
-
-            //services.AddTransient(typeof(ISession), serviceProvider =>
-            //{
-            //    var httpContextAccessor = serviceProvider.GetService<IHttpContextAccessor>();
-            //    return httpContextAccessor.HttpContext.Session;
-            //});
+            services.AddTransient<LocalEmailSenderService>();
 
             services.AddMvc();
 
@@ -98,7 +93,14 @@ namespace InMemDbPizza
 
             if(env.IsProduction())
             {
-                context.Database.Migrate();
+                try
+                {
+                    context.Database.Migrate();
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Database connection error");
+                }
             }
 
             DbInitializer.Initialize(userManager, context, roleManager);
