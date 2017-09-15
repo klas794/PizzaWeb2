@@ -10,16 +10,8 @@ nav.navbar {
     padding-top: 6px
 }
 
-@media screen and (max-width: 767px) {
-    nav.navbar {
-        background: white;
-        border: none;
-        margin: 10px 0 0;
-        min-height: 60px;
-        height: auto;
-
-        padding-top: 6px
-    }    
+.main-menu {
+    margin: 0 50px;
 }
 
 @media screen and (max-width: 845px) {
@@ -31,6 +23,22 @@ nav.navbar {
 @media screen and (max-width: 767px) {
     .nav li a {
         padding: 15px !important
+    }
+
+    nav.navbar {
+        background: white;
+        border: none;
+        margin: 10px 0 0;
+        min-height: 60px;
+        height: auto;
+        padding-top: 6px
+    }    
+}
+
+@media screen and (max-width: 576px) {
+
+    .main-menu {
+        margin: 0 15px
     }
 }
 
