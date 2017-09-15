@@ -1,5 +1,6 @@
 ﻿using InMemDbPizza.Data;
 using InMemDbPizza.Models;
+using InMemDbPizza.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +36,7 @@ namespace XUnitTestProject1
             services.AddTransient<IngredientService>();
             services.AddTransient<CartItemService>();
             services.AddTransient<CartService>();
+            services.AddTransient<LocalEmailSenderService>();
 
             _serviceProvider = services.BuildServiceProvider();
 

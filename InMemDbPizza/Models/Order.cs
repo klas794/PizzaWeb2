@@ -25,5 +25,7 @@ namespace ProjectPizzaWeb.Models
 
         [Display(Name = "Time of order")]
         public DateTime OrderTime { get; set; }
+
+        public bool Delivered { get; set; }
     }
 }

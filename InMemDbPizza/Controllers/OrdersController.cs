@@ -22,15 +22,56 @@ namespace ProjectPizzaWeb.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index(string viewMode)
+        public async Task<IActionResult> Index(string viewMode, int? deliveredOrderId)
         {
-            ViewBag.ViewMode = viewMode;
+            var model = new OrdersIndexViewModel();
 
-            var applicationDbContext = _context.Orders
+            model.ViewMode = viewMode;
+
+            if (deliveredOrderId != null)
+            {
+                model.DeliveredOrderId = deliveredOrderId;
+                model.DeliveredOrder = _context.Orders.Find(deliveredOrderId);
+            }
+
+            model.Orders = GetOrdersForIndexView();
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Index(string submit)
+        {
+            string action = submit.Substring(0, submit.IndexOf('-'));
+
+            int orderId;
+            int.TryParse(submit.Substring(submit.IndexOf('-') + 1), out orderId);
+
+            return RedirectToAction("Deliver", new { orderId = orderId });
+        }
+
+        [HttpGet]
+        public IActionResult Deliver(int orderId)
+        {
+
+            var deliveredOrder = _context.Orders.Find(orderId);
+            deliveredOrder.Delivered = true;
+            _context.Update(deliveredOrder);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Orders", 
+                new { deliveredOrderId = deliveredOrder.OrderId } );
+
+        }
+
+        private List<Order> GetOrdersForIndexView()
+        {
+            var orders = _context.Orders
                 .Include(o => o.Address).Include(o => o.Cart).Include(o => o.Payment)
                 .ThenInclude(p => p.PaymentType)
                 .OrderByDescending(x => x.OrderTime);
-            return View(await applicationDbContext.ToListAsync());
+
+            return orders.ToList();
         }
 
         // GET: Orders/Details/5

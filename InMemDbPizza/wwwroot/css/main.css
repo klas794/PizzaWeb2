@@ -1,4 +1,4 @@
-﻿nav a:hover, nav a:active, nav a:hover {
+﻿nav a:hover, nav a:active, nav a:focus {
     color: grey !important;
 }
 
@@ -70,4 +70,8 @@ nav .icon-bar {
 .navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
     background-color: #fcf8e3;
     border-color: rgb(221, 221, 221);
+}
+
+.manage-order-button {
+    margin-bottom: 5px
 }

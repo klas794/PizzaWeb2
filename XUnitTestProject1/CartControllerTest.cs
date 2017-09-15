@@ -81,13 +81,13 @@ namespace XUnitTestProject1
 
             var dbContext = _serviceProvider.GetRequiredService<ApplicationDbContext>();
             var logger = _serviceProvider.GetRequiredService<ILogger<CartController>>();
-
+            var emailService = _serviceProvider.GetRequiredService<LocalEmailSenderService>();
 
             var actionDescriptor = new Mock<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>().Object;
             var modelState = new ModelStateDictionary();
             var actionContext = new ActionContext(_httpContext.Object, new Mock<RouteData>().Object, actionDescriptor, modelState);
 
-            var controller = new CartController(dbContext, _cartService, logger);
+            var controller = new CartController(dbContext, _cartService, logger, emailService);
             controller.ControllerContext = new ControllerContext(actionContext);
 
             var reviewOrderViewModel = new ReviewOrderViewModel()
