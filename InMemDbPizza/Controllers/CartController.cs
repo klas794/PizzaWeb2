@@ -341,7 +341,7 @@ namespace ProjectPizzaWeb.Controllers
 
             order.Address = _context.Addresses.Find(order.AddressId);
 
-            _emailService.SendConfirmationEmailAsync(order);
+            _emailService.SendConfirmationEmail(order);
 
             return View(order);
         }

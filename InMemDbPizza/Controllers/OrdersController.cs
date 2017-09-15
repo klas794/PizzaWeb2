@@ -22,7 +22,7 @@ namespace ProjectPizzaWeb.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index(string viewMode, int? deliveredOrderId)
+        public IActionResult Index(string viewMode, int? deliveredOrderId)
         {
             var model = new OrdersIndexViewModel();
 

@@ -11,7 +11,7 @@ namespace ProjectPizzaWeb.Services
 {
     public class LocalEmailSenderService : IEmailSender
     {
-        public async Task SendConfirmationEmailAsync(Order order)
+        public void SendConfirmationEmail(Order order)
         {
             var message = string.Format(
                 "Your order of {0} items has been processed. The order was created {1} {2}.", 

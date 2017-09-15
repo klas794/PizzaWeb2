@@ -43,7 +43,7 @@ namespace ProjectPizzaWeb.Services
                 cart = await this.CreateCart(session, user);
             }
 
-            if(userId != cart.ApplicationUserId)
+            if (userId != cart.ApplicationUserId)
             {
                 cart.ApplicationUserId = userId;
             }
@@ -55,16 +55,25 @@ namespace ProjectPizzaWeb.Services
 
         public async Task<Cart> CreateCart(ISession session, ClaimsPrincipal user)
         {
-            var userId = _userManager.GetUserId(user);
-
-            var appUser = await _userManager.GetUserAsync(user);
 
             var cart = new Cart()
             {
-                ApplicationUser = appUser,
-                ApplicationUserId = userId,
                 CartItems = new List<CartItem>()
             };
+
+            var userId = _userManager.GetUserId(user);
+
+            if(userId != null)
+            {
+                cart.ApplicationUserId = userId;
+            }
+
+            var appUser = await _userManager.GetUserAsync(user);
+
+            if(appUser != null)
+            {
+                cart.ApplicationUser = appUser;
+            }
 
             await _context.AddAsync(cart);
             await _context.SaveChangesAsync();

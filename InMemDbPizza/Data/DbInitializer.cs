@@ -10,24 +10,8 @@ namespace InMemDbPizza.Data
 {
     public class DbInitializer
     {
-        public static async Task Initialize(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
+        public static async Task InitializeAsync(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
         {
-            var aUser = new ApplicationUser();
-            aUser.UserName = "student@test.com";
-            aUser.Email = "student@test.com";
-            await userManager.CreateAsync(aUser, "Pa$$w0rd");
-
-            var adminRole = new IdentityRole { Name = "Admin" };
-            await roleManager.CreateAsync(adminRole);
-
-            var adminUser = new ApplicationUser();
-            adminUser.UserName = "admin@test.com";
-            adminUser.Email = "admin@test.com";
-
-            var adminUserResult = userManager.CreateAsync(adminUser, "Pa$$w0rd");
-
-            var roleAddedResult = userManager.AddToRoleAsync(adminUser, "Admin");
-
             if (context.Dishes.ToList().Count == 0)
             {
                 var visa = new PaymentChoice { Name = "Visa" };
@@ -94,7 +78,22 @@ namespace InMemDbPizza.Data
 
             }
 
-            
+            var aUser = new ApplicationUser();
+            aUser.UserName = "student@test.com";
+            aUser.Email = "student@test.com";
+            await userManager.CreateAsync(aUser, "Pa$$w0rd");
+
+            var adminRole = new IdentityRole { Name = "Admin" };
+            await roleManager.CreateAsync(adminRole);
+
+            var adminUser = new ApplicationUser();
+            adminUser.UserName = "admin@test.com";
+            adminUser.Email = "admin@test.com";
+
+            var adminUserResult = await userManager.CreateAsync(adminUser, "Pa$$w0rd");
+
+            var roleAddedResult = await userManager.AddToRoleAsync(adminUser, "Admin");
+
         }
 
         public static Cart SeedCartWithDish(Dish dish, ApplicationDbContext context, Ingredient extraIngredient = null, int quantity = 1, Cart cartTarget = null)

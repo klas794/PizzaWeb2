@@ -14,6 +14,7 @@ using InMemDbPizza.Services;
 using ProjectPizzaWeb.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
+using ProjectPizzaWeb.Models;
 
 namespace InMemDbPizza
 {
@@ -91,19 +92,18 @@ namespace InMemDbPizza
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            if(env.IsProduction())
+            ConfigureAsync(userManager, context, roleManager, env).Wait();
+        }
+
+        public async Task ConfigureAsync(UserManager<ApplicationUser> userManager,
+            ApplicationDbContext context, RoleManager<IdentityRole> roleManager, IHostingEnvironment env)
+        {
+            if (env.IsProduction())
             {
-                try
-                {
-                    context.Database.Migrate();
-                }
-                catch (Exception)
-                {
-                    throw new Exception("Database connection error");
-                }
+                await context.Database.MigrateAsync();
             }
 
-            DbInitializer.Initialize(userManager, context, roleManager);
+            await DbInitializer.InitializeAsync(userManager, context, roleManager);
         }
     }
 }
