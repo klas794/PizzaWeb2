@@ -29,12 +29,12 @@
             </th>
             <th>
                 <a asp-action="Index" asp-route-viewMode="narrow" 
-                   class="btn btn-default btn-sm pull-right" aria-label="Narrow list">
+                   class="btn btn-default btn-sm pull-right" aria-label="Narrow list" style="margin-left: 5px">
                     <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
                 </a>
 
                 <a asp-action="Index" asp-route-viewMode="expanded" 
-                   class="btn btn-default btn-sm pull-right" aria-label="Expanded list" style="margin-right: 5px">
+                   class="btn btn-default btn-sm pull-right" aria-label="Expanded list" style="margin-left: 5px">
                     <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                 </a>
             </th>
@@ -91,13 +91,13 @@
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                 </a>*@
                 
-                <a class="visible-xs" asp-action="View" asp-controller="Cart" asp-route-cartId="@item.CartId">
+                <a class="visible-xs pull-right" asp-action="View" asp-controller="Cart" asp-route-cartId="@item.CartId">
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                 </a>
 
                 <a class="hidden-xs" asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
 
-                <a class="visible-xs" asp-action="Delete" asp-route-id="@item.OrderId">
+                <a class="visible-xs pull-right" asp-action="Delete" asp-route-id="@item.OrderId" style="clear: right">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </a>
             </td>
