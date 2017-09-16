@@ -1,0 +1,12 @@
+﻿@model DateTime?
+
+@if (Model.HasValue)
+{
+    if(Model.Value.Date == DateTime.Today)
+    {
+        <text>Today </text>@Model.Value.ToString("HH:mm")
+    }
+    else { 
+        @Model.Value.ToString("yyyy-MM-dd HH:mm")
+    }
+}
