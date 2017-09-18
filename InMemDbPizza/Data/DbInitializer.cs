@@ -79,8 +79,8 @@ namespace InMemDbPizza.Data
             }
 
 
-            var userName = "studentnew@test.com";
-            var adminName = "adminnew@test.com";
+            var userName = "student@test.com";
+            var adminName = "admin@test.com";
             var adminRoleName = "Admin";
 
             if (userManager.FindByNameAsync(userName).Result == null)
