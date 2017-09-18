@@ -18,6 +18,7 @@ using ProjectPizzaWeb.Models;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Extensions.Logging.AzureAppServices;
 
 namespace InMemDbPizza
 {
@@ -92,6 +93,14 @@ namespace InMemDbPizza
 
             loggerFactory.AddConsole();
             loggerFactory.AddDebug();
+
+            if (env.IsProduction()) { 
+                loggerFactory.AddAzureWebAppDiagnostics(
+                    new AzureAppServicesDiagnosticsSettings
+                    {
+                        OutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss zzz} [{Level}] {RequestId}-{SourceContext}: {Message}{NewLine}{Exception}"
+                    });
+            }
 
             app.UseSession();
 
