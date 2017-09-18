@@ -15,6 +15,9 @@ using ProjectPizzaWeb.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using ProjectPizzaWeb.Models;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace InMemDbPizza
 {
@@ -33,7 +36,13 @@ namespace InMemDbPizza
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            if(_environment.IsProduction())
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
+            if (_environment.IsProduction())
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -65,6 +74,22 @@ namespace InMemDbPizza
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager, ILoggerFactory loggerFactory)
         {
+            var svSECulture= "sv-SE";
+
+            var supportedCultures = new[]
+            {
+                new CultureInfo(svSECulture),
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(svSECulture),
+                // Formatting numbers, dates, etc.
+                SupportedCultures = supportedCultures,
+                // UI strings that we have localized.
+                SupportedUICultures = supportedCultures
+            });
+
             loggerFactory.AddConsole();
             loggerFactory.AddDebug();
 
