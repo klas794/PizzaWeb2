@@ -10,7 +10,7 @@ namespace InMemDbPizza.Data
 {
     public class DbInitializer
     {
-        public static async Task InitializeAsync(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
+        public static void Initialize(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
         {
             if (context.Dishes.ToList().Count == 0)
             {
@@ -78,21 +78,36 @@ namespace InMemDbPizza.Data
 
             }
 
-            var aUser = new ApplicationUser();
-            aUser.UserName = "student@test.com";
-            aUser.Email = "student@test.com";
-            await userManager.CreateAsync(aUser, "Pa$$w0rd");
 
-            var adminRole = new IdentityRole { Name = "Admin" };
-            await roleManager.CreateAsync(adminRole);
+            var userName = "studentnew@test.com";
+            var adminName = "adminnew@test.com";
+            var adminRoleName = "Admin";
 
-            var adminUser = new ApplicationUser();
-            adminUser.UserName = "admin@test.com";
-            adminUser.Email = "admin@test.com";
+            if (userManager.FindByNameAsync(userName).Result == null)
+            {
+                var aUser = new ApplicationUser();
+                aUser.UserName = userName;
+                aUser.Email = userName;
+                userManager.CreateAsync(aUser, "Pa$$w0rd").Wait();
+            }
 
-            var adminUserResult = await userManager.CreateAsync(adminUser, "Pa$$w0rd");
+            if(!roleManager.RoleExistsAsync(adminRoleName).Result)
+            {
+                var adminRole = new IdentityRole { Name = adminRoleName };
+                roleManager.CreateAsync(adminRole).Wait();
+            }
 
-            var roleAddedResult = await userManager.AddToRoleAsync(adminUser, "Admin");
+            if(userManager.FindByNameAsync(adminName).Result == null)
+            {
+                var adminUser = new ApplicationUser();
+                adminUser.UserName = adminName;
+                adminUser.Email = adminName;
+                userManager.CreateAsync(adminUser, "Pa$$w0rd").Wait();
+
+                userManager.AddToRoleAsync(adminUser, adminRoleName).Wait();
+            }
+
+
 
         }
 

@@ -126,7 +126,14 @@ namespace InMemDbPizza
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            ConfigureAsync(userManager, context, roleManager, env).Wait();
+            if (env.IsProduction() || env.IsStaging())
+            {
+                context.Database.Migrate();
+            }
+
+            DbInitializer.Initialize(userManager, context, roleManager);
+
+            //ConfigureAsync(userManager, context, roleManager, env).Wait();
         }
 
         public async Task ConfigureAsync(UserManager<ApplicationUser> userManager,
@@ -137,7 +144,7 @@ namespace InMemDbPizza
                 await context.Database.MigrateAsync();
             }
 
-            await DbInitializer.InitializeAsync(userManager, context, roleManager);
+            DbInitializer.Initialize(userManager, context, roleManager);
         }
     }
 }
