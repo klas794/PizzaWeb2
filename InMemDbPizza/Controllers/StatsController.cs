@@ -73,10 +73,6 @@ namespace ProjectPizzaWeb.Controllers
 
         private Dish GetMostPopularDish()
         {
-            if(_context.Orders.Count() == 0)
-            {
-                return null;
-            }
 
             var orderedDishes = _context.Orders
                 .Include(x => x.Cart)
@@ -101,11 +97,7 @@ namespace ProjectPizzaWeb.Controllers
 
         private Ingredient GetMostPopularIngredient()
         {
-            if (_context.CartItems.Count() == 0)
-            {
-                return null;
-            }
-
+            
             var orderedIngredients = _context.CartItems
                 .Include(x => x.CartItemIngredients)
                 .SelectMany(x => x.CartItemIngredients)
