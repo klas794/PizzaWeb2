@@ -42,7 +42,7 @@ namespace InMemDbPizza
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 
-            if (_environment.IsProduction())
+            if (_environment.IsProduction() || _environment.IsStaging())
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -123,7 +123,7 @@ namespace InMemDbPizza
         public async Task ConfigureAsync(UserManager<ApplicationUser> userManager,
             ApplicationDbContext context, RoleManager<IdentityRole> roleManager, IHostingEnvironment env)
         {
-            if (env.IsProduction())
+            if (env.IsProduction() || env.IsStaging())
             {
                 await context.Database.MigrateAsync();
             }

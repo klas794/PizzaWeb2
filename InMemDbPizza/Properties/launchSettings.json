@@ -31,6 +31,14 @@
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
       "applicationUrl": "http://localhost:2486/"
+    },
+    "Staging": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Staging"
+      },
+      "applicationUrl": "http://localhost:1939/"
     }
   }
 }

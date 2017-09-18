@@ -1,6 +1,8 @@
 ﻿using InMemDbPizza.Data;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,19 @@ namespace ProjectPizzaWeb.Models
 {
     public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
     {
+        private IConfiguration _configuration;
+
+        public ApplicationDbContextFactory(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public ApplicationDbContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseSqlServer("Server=tcp:projectpizzawebdb.database.windows.net,1433;Initial Catalog=pizzaDb;Persist Security Info=False;User ID=klas794;Password=Pa$$w0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+
+            builder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+            
             var dbContext = new ApplicationDbContext(builder.Options);
             return dbContext;
         }
