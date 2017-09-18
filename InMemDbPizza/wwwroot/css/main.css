@@ -135,9 +135,21 @@ nav .icon-bar {
     line-height: 58px;
 }
 
-
-
-
 .bulletin-border-right {
     border-right: 1px solid #ddd;
 }
+
+.nav-pills li a,
+.nav-pills li a:hover {
+    background: #fff;
+    color: #8a6d3b;
+    border: 1px solid #eee;
+}
+
+.nav-pills li.active a,
+.nav-pills li.active a:hover {
+    background: #fcf8e3;
+    color: #8a6d3b;
+    border: 1px solid white;
+}
+
