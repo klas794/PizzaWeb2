@@ -63,13 +63,13 @@ namespace ProjectPizzaWeb.Services
 
             var userId = _userManager.GetUserId(user);
 
-            if(userId != null)
+            if(userId != null && user != null && user.Identity != null && user.Identity.IsAuthenticated)
             {
                 cart.ApplicationUserId = userId;
             }
 
             var appUser = await _userManager.GetUserAsync(user);
-
+            
             if(appUser != null)
             {
                 cart.ApplicationUser = appUser;
