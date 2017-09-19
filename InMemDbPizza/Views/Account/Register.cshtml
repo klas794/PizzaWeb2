@@ -12,9 +12,9 @@
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <label asp-for="Address.Email"></label>
+                <input asp-for="Address.Email" class="form-control" />
+                <span asp-validation-for="Address.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password"></label>
@@ -29,6 +29,16 @@
             
             <h4>Address</h4>
             
+            <div class="form-group">
+                <label asp-for="Address.Phone"></label>
+                <input asp-for="Address.Phone" class="form-control" />
+                <span asp-validation-for="Address.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.Name"></label>
+                <input asp-for="Address.Name" class="form-control" />
+                <span asp-validation-for="Address.Name" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Address.PostalAddress"></label>
                 <input asp-for="Address.PostalAddress" class="form-control" />
