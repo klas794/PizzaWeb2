@@ -66,19 +66,19 @@ namespace ProjectPizzaWeb.Services
             };
 
             var userId = _userManager.GetUserId(user);
+            ApplicationUser appUser = null;
 
-            if(userId != null && _signInManager.IsSignedIn(user))
+            if(userId != null)
+            {
+                appUser = await _userManager.GetUserAsync(user);
+            }
+
+            if (userId != null && _signInManager.IsSignedIn(user) && appUser != null)
             {
                 cart.ApplicationUserId = userId;
-            }
-
-            var appUser = await _userManager.GetUserAsync(user);
-            
-            if(appUser != null && _signInManager.IsSignedIn(user))
-            {
                 cart.ApplicationUser = appUser;
             }
-
+            
             await _context.AddAsync(cart);
             await _context.SaveChangesAsync();
 
