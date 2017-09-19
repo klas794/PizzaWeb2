@@ -12,7 +12,8 @@ namespace InMemDbPizza.Data
     {
         public static void Initialize(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
         {
-            if (context.Dishes.ToList().Count == 0)
+            if (context.Dishes.ToList().Count == 0 && context.Ingredient.Count() == 0 &&
+                context.Category.Count() == 0 && context.PaymentChoices.Count() == 0)
             {
                 var visa = new PaymentChoice { Name = "Visa" };
                 var mastercart = new PaymentChoice { Name = "Mastercard" };
@@ -106,8 +107,6 @@ namespace InMemDbPizza.Data
 
                 userManager.AddToRoleAsync(adminUser, adminRoleName).Wait();
             }
-
-
 
         }
 

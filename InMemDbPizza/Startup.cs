@@ -136,15 +136,15 @@ namespace InMemDbPizza
             //ConfigureAsync(userManager, context, roleManager, env).Wait();
         }
 
-        public async Task ConfigureAsync(UserManager<ApplicationUser> userManager,
-            ApplicationDbContext context, RoleManager<IdentityRole> roleManager, IHostingEnvironment env)
-        {
-            if (env.IsProduction() || env.IsStaging())
-            {
-                await context.Database.MigrateAsync();
-            }
+        //public async Task ConfigureAsync(UserManager<ApplicationUser> userManager,
+        //    ApplicationDbContext context, RoleManager<IdentityRole> roleManager, IHostingEnvironment env)
+        //{
+        //    if (env.IsProduction() || env.IsStaging())
+        //    {
+        //        await context.Database.MigrateAsync();
+        //    }
 
-            DbInitializer.Initialize(userManager, context, roleManager);
-        }
+        //    DbInitializer.Initialize(userManager, context, roleManager);
+        //}
     }
 }
