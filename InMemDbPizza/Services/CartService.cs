@@ -17,11 +17,13 @@ namespace ProjectPizzaWeb.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public CartService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CartService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public async Task<Cart> GetCart(ISession session, ClaimsPrincipal user)
@@ -48,8 +50,10 @@ namespace ProjectPizzaWeb.Services
                 cart.ApplicationUserId = userId;
             }
 
-            cart.ApplicationUser = appUser;
-
+            if(appUser != null ) { 
+                cart.ApplicationUser = appUser;
+            }
+            
             return cart;
         }
 
@@ -63,14 +67,14 @@ namespace ProjectPizzaWeb.Services
 
             var userId = _userManager.GetUserId(user);
 
-            if(userId != null && user != null && user.Identity != null && user.Identity.IsAuthenticated)
+            if(userId != null && _signInManager.IsSignedIn(user))
             {
                 cart.ApplicationUserId = userId;
             }
 
             var appUser = await _userManager.GetUserAsync(user);
             
-            if(appUser != null)
+            if(appUser != null && _signInManager.IsSignedIn(user))
             {
                 cart.ApplicationUser = appUser;
             }
